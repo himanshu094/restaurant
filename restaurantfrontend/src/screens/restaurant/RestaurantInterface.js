@@ -115,7 +115,15 @@ function RestaurantInterface(){
                       Upload Logo
                       </Button>
                     </Grid>
-                  
+                    
+                    
+                      <Grid item xs={6}>
+                        <Button variant="contained" fullWidth>Submit</Button> 
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Button variant="contained" fullWidth>Reset</Button>
+                      </Grid>
+                    
 
                 </Grid>
             </div>
