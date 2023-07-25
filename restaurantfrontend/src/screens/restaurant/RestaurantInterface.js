@@ -6,6 +6,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import UploadIcon from '@mui/icons-material/Upload';
 
+import Swal from 'sweetalert2';
 import { serverURL,getData,postData} from "../../services/FetchNodeServics";
 import Heading from "../../components/heading/Heading";
 import { UploadFile } from "@mui/icons-material";
@@ -61,7 +62,7 @@ function RestaurantInterface(){
   const fetchAllStates=async()=>{
      const result=await getData('statecity/fetch_all_states');
      setStates(result.data);
-     console.log(result.data);
+    //  console.log(result.data);
   }
 
   useEffect(function(){
@@ -101,12 +102,13 @@ function RestaurantInterface(){
     setFileLogo({url:URL.createObjectURL(event.target.files[0]),bytes:event.target.files[0]})
   }
   const handleSubmit=async()=>{
+
       const formData=new FormData();
       formData.append('restaurantname',restaurantName);
       formData.append('ownername',ownerName);
       formData.append('phonenumber',phoneNumber);
       formData.append('emailid',emailid);
-      formData.append('mobilenumber',mobileNumber);
+      formData.append('mobileno',mobileNumber);
       formData.append('address',address);
       formData.append('stateid',stateid);
       formData.append('cityid',cityid);
@@ -117,11 +119,29 @@ function RestaurantInterface(){
       formData.append('filelogo',fileLogo.bytes);
       formData.append('fileshopact',fileShopAct.bytes);
       formData.append('filefssai',fileFssai.bytes);
-      formData.append('createdat',new Date());
-      formData.append('updatedat',new Date());
+      const d=new Date();
+      const cd=d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+      formData.append('createdat',cd);
+      formData.append('updatedat',cd);
 
       const result=await postData('restaurants/restaurant_submit',formData);
-      alert(result.status)
+      
+      if(result.status)
+      {
+        Swal.fire({
+          icon: 'success',
+          title: 'Restaurant Registration',
+          text: result.message
+        })
+      }
+      else
+      {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: result.message,
+        })
+      }
   }
 
   return(<div className={classes.root}>
