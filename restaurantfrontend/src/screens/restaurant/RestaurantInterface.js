@@ -1,5 +1,5 @@
 import { useState,useEffect } from "react";
-import { Grid,TextField,Button,Select } from "@mui/material";
+import { Avatar,Grid,TextField,Button,Select } from "@mui/material";
 import { makeStyles } from '@mui/styles';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -13,7 +13,7 @@ import { UploadFile } from "@mui/icons-material";
 const useStyles = makeStyles({
   root: {
     width:"100vw",
-    height:"100vh",
+    height:"120vh",
     background:"#dfe4ea",
     display:"flex",
     alignItems:"center",
@@ -25,6 +25,11 @@ const useStyles = makeStyles({
     borderRadius:10,
     background:"#fff",
     padding:15
+  },
+  center:{
+    display:"flex",
+    justifyContent:"center",
+    alignItems:"center"
   }
 });
 
@@ -84,6 +89,39 @@ function RestaurantInterface(){
   const handleStateChange=(event)=>{
     setStateId(event.target.value);
     fetchAllCities(event.target.value);
+  }
+
+  const handleFssai=(event)=>{
+    setFileFssai({url:URL.createObjectURL(event.target.files[0]),bytes:event.target.files[0]})
+  }
+  const handleShopAct=(event)=>{
+    setFileShopAct({url:URL.createObjectURL(event.target.files[0]),bytes:event.target.files[0]})
+  }
+  const handleLogo=(event)=>{
+    setFileLogo({url:URL.createObjectURL(event.target.files[0]),bytes:event.target.files[0]})
+  }
+  const handleSubmit=async()=>{
+      const formData=new FormData();
+      formData.append('restaurantname',restaurantName);
+      formData.append('ownername',ownerName);
+      formData.append('phonenumber',phoneNumber);
+      formData.append('emailid',emailid);
+      formData.append('mobilenumber',mobileNumber);
+      formData.append('address',address);
+      formData.append('stateid',stateid);
+      formData.append('cityid',cityid);
+      formData.append('url',url);
+      formData.append('fssai',fssai);
+      formData.append('gstno',gstNo);
+      formData.append('gsttype',gstType);
+      formData.append('filelogo',fileLogo.bytes);
+      formData.append('fileshopact',fileShopAct.bytes);
+      formData.append('filefssai',fileFssai.bytes);
+      formData.append('createdat',new Date());
+      formData.append('updatedat',new Date());
+
+      const result=await postData('restaurants/restaurant_submit',formData);
+      alert(result.status)
   }
 
   return(<div className={classes.root}>
@@ -150,34 +188,63 @@ function RestaurantInterface(){
                         <InputLabel>GST Type</InputLabel>
                         <Select label="GST Type" value={gstType} onChange={(event)=>setGstType(event.target.value)}>
                           <MenuItem>-Select Gst Type-</MenuItem>
-                          <MenuItem>5 Star</MenuItem>
-                          <MenuItem>Other</MenuItem>
+                          <MenuItem value="5 Star">5 Star</MenuItem>
+                          <MenuItem value="Other">Other</MenuItem>
                         </Select>
                       </FormControl>
                     </Grid>
                     
                     <Grid item xs={4}>
-                      <Button fullWidth component="label" variant="contained" endIcon={<UploadIcon/>}>
-                      <input hidden accept="image/*" type="file"/>
+                      <Button fullWidth component="label" variant="contained" endIcon={<UploadIcon/>}>       
+                      <input hidden onChange={handleFssai} accept="image/*" multiple type="file"/>
                       Upload Fssai
                       </Button>
                     </Grid>
+
                     <Grid item xs={4}>
                       <Button fullWidth component="label" variant="contained" endIcon={<UploadIcon/>}>
-                      <input hidden accept="image/*" type="file"/>
+                      <input hidden onChange={handleShopAct} accept="image/*" multiple type="file"/>
                       Upload Shop Act
                       </Button>
                     </Grid>
+
                     <Grid item xs={4}>
                       <Button fullWidth component="label" variant="contained" endIcon={<UploadIcon/>}>
-                      <input hidden accept="image/*" type="file"/>
+                      <input hidden onChange={handleLogo} accept="image/*" multiple type="file"/>
                       Upload Logo
                       </Button>
+                    </Grid>
+
+                    <Grid item xs={4} className={classes.center}>
+                      <Avatar
+                        variant="rounded"
+                        alt="Remy Sharp"
+                        src={fileFssai.url}
+                        sx={{ width: 56, height: 56 }}
+                      />
+                    </Grid>
+
+                    <Grid item xs={4} className={classes.center}>
+                      <Avatar
+                        variant="rounded"
+                        alt="Remy Sharp"
+                        src={fileShopAct.url}
+                        sx={{ width: 56, height: 56 }}
+                      />
+                    </Grid>
+
+                    <Grid item xs={4} className={classes.center}>
+                      <Avatar
+                        variant="rounded"
+                        alt="Remy Sharp"
+                        src={fileLogo.url}
+                        sx={{ width: 56, height: 56 }}
+                      />
                     </Grid>
                     
                     
                       <Grid item xs={6}>
-                        <Button variant="contained" fullWidth>Submit</Button> 
+                        <Button onClick={handleSubmit} variant="contained" fullWidth>Submit</Button> 
                       </Grid>
                       <Grid item xs={6}>
                         <Button variant="contained" fullWidth>Reset</Button>
