@@ -1,5 +1,5 @@
 import { useState,useEffect } from "react";
-import { Avatar,Grid,TextField,Button,Select } from "@mui/material";
+import { Avatar,Grid,TextField,Button,Select,FormHelperText } from "@mui/material";
 import { makeStyles } from '@mui/styles';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -55,9 +55,57 @@ function RestaurantInterface(){
   const [fileShopAct,setFileShopAct]=useState({url:'',bytes:''})
   const [fileLogo,setFileLogo]=useState({url:'',bytes:''})
   const [address,setAddress]=useState('')
+  const [resError,setResError]=useState({});
 
+  const handleError = (error,input,message)=>{
+    setResError(prevState => ({...prevState,[input]:{'error':error,'message':message}}));
+    //console.log("CC",resError);
+  }
 
+  function validation(){
+    let submitRecord=true;
+    if(restaurantName.trim().length===0)
+    {
+      handleError(true,'restaurantName',"please Input Restaurant Name")
+      submitRecord=false
+    }
+    if(ownerName.trim().length===0)
+    {
+      handleError(true,'ownerName',"please Input Owner Name")
+      submitRecord=false
+    }
+    if(!mobileNumber || !(/^[0-9]{10}$/).test(mobileNumber))
+    {
+      handleError(true,'mobileNumber',"Please Input 10 digit Mobile Number")
+       
+      submitRecord=false
+    }
+    if(!emailid || !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailid)))
+    {
+      handleError(true,'emailid',"Please Input Correct Email Address")
+       
+      submitRecord=false 
+    }
+    if(address.trim().length===0)
+    {
+      handleError(true,'address',"please input address")
 
+      submitRecord=false;
+    }
+    if(!stateid)
+    {
+      handleError(true,'stateid','please select State')
+
+      submitRecord=false
+    }
+    if(!fileFssai.url)
+    {
+      handleError(true,'fileFssai','Please Upload Fssai')
+
+      submitRecord=false
+    }
+    return submitRecord
+  }
 
   const fetchAllStates=async()=>{
      const result=await getData('statecity/fetch_all_states');
@@ -102,46 +150,47 @@ function RestaurantInterface(){
     setFileLogo({url:URL.createObjectURL(event.target.files[0]),bytes:event.target.files[0]})
   }
   const handleSubmit=async()=>{
+      if(validation()){
+        const formData=new FormData();
+        formData.append('restaurantname',restaurantName);
+        formData.append('ownername',ownerName);
+        formData.append('phonenumber',phoneNumber);
+        formData.append('emailid',emailid);
+        formData.append('mobileno',mobileNumber);
+        formData.append('address',address);
+        formData.append('stateid',stateid);
+        formData.append('cityid',cityid);
+        formData.append('url',url);
+        formData.append('fssai',fssai);
+        formData.append('gstno',gstNo);
+        formData.append('gsttype',gstType);
+        formData.append('filelogo',fileLogo.bytes);
+        formData.append('fileshopact',fileShopAct.bytes);
+        formData.append('filefssai',fileFssai.bytes);
+        const d=new Date();
+        const cd=d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+        formData.append('createdat',cd);
+        formData.append('updatedat',cd);
 
-      const formData=new FormData();
-      formData.append('restaurantname',restaurantName);
-      formData.append('ownername',ownerName);
-      formData.append('phonenumber',phoneNumber);
-      formData.append('emailid',emailid);
-      formData.append('mobileno',mobileNumber);
-      formData.append('address',address);
-      formData.append('stateid',stateid);
-      formData.append('cityid',cityid);
-      formData.append('url',url);
-      formData.append('fssai',fssai);
-      formData.append('gstno',gstNo);
-      formData.append('gsttype',gstType);
-      formData.append('filelogo',fileLogo.bytes);
-      formData.append('fileshopact',fileShopAct.bytes);
-      formData.append('filefssai',fileFssai.bytes);
-      const d=new Date();
-      const cd=d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
-      formData.append('createdat',cd);
-      formData.append('updatedat',cd);
-
-      const result=await postData('restaurants/restaurant_submit',formData);
-      
-      if(result.status)
-      {
-        Swal.fire({
-          icon: 'success',
-          title: 'Restaurant Registration',
-          text: result.message
-        })
-      }
-      else
-      {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: result.message,
-        })
-      }
+        const result=await postData('restaurants/restaurant_submit',formData);
+        
+        if(result.status)
+        {
+          Swal.fire({
+            icon: 'success',
+            title: 'Restaurant Registration',
+            text: result.message
+          })
+        }
+        else
+        {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: result.message,
+          })
+        }
+      }    
   }
 
   return(<div className={classes.root}>
@@ -153,36 +202,69 @@ function RestaurantInterface(){
                     </Grid>
 
                     <Grid item xs={6}>
-                      <TextField label="Restaurant Name" onChange={(event)=>setRestaurantName(event.target.value)} fullWidth/>
+                      <TextField 
+                      onFocus={()=>handleError(false,'restaurantName','')}
+                      error={resError?.restaurantName?.error}
+                      helperText={resError?.restaurantName?.message}
+                      label="Restaurant Name" onChange={(event)=>setRestaurantName(event.target.value)} fullWidth
+                      />
                     </Grid>
                     <Grid item xs={6}>
-                      <TextField onChange={(event)=>setOwnerName(event.target.value)} label="Owner Name" fullWidth/>
+                      <TextField 
+                      onFocus={()=>handleError(false,'ownerName','')}
+                      error={resError?.ownerName?.error}
+                      helperText={resError?.ownerName?.message}
+                      onChange={(event)=>setOwnerName(event.target.value)} label="Owner Name" fullWidth/>
                     </Grid>
 
                     <Grid item xs={4}>
                       <TextField onChange={(event)=>setPhoneNumber(event.target.value)} label="Phone Number" fullWidth/>
                     </Grid>
+
                     <Grid item xs={4}>
-                      <TextField onChange={(event)=>setMobileNumber(event.target.value)} label="Mobile Number" fullWidth/>
+                      <TextField 
+                      onFocus={()=>handleError(false,'mobileNumber','')}
+                      error={resError?.mobileNumber?.error}
+                      helperText={resError?.mobileNumber?.message}
+                      onChange={(event)=>setMobileNumber(event.target.value)} label="Mobile Number" fullWidth/>
                     </Grid>
+
                     <Grid item xs={4}>
-                      <TextField label="Email Address" onChange={(event)=>setEmailid(event.target.value)} fullWidth/>
+                      <TextField
+                      onFocus={()=>handleError(false,'emailid','')}
+                      error={resError?.emailid?.error}
+                      helperText={resError?.emailid?.message}
+                      label="Email Address" onChange={(event)=>setEmailid(event.target.value)} fullWidth/>
                     </Grid>
 
                     <Grid item xs={12}>
-                      <TextField onChange={(event)=>setAddress(event.target.value)} label="Address" fullWidth/>
+                      <TextField
+                      onFocus={()=>handleError(false,'address','')}
+                      error={resError?.address?.error}
+                      helperText={resError?.address?.message}
+                      onChange={(event)=>setAddress(event.target.value)} label="Address" fullWidth/>
                     </Grid>
 
                     <Grid item xs={4}>
                       <FormControl fullWidth>
                         <InputLabel>States</InputLabel>
-                        <Select onChange={handleStateChange} value={stateid} label="States">
+                        <Select 
+                        onFocus={()=>handleError(false,'mobileNumber','')}
+                        error={resError?.stateid?.error}
+                        helperText={resError?.stateid?.message}
+                        onChange={handleStateChange} value={stateid} label="States">
                           <MenuItem>-Select State-
                           </MenuItem>
                           {fillState()}
                         </Select>
+                        <FormHelperText style={{color:"#d32f2f"}}>
+                        {resError?.stateid?.message}
+                        </FormHelperText>
                       </FormControl>
+                      {//resError?.stateid?.error?<div>{resError?.stateid?.message}</div>:<></>
+                      }
                     </Grid>
+
                     <Grid item xs={4}>
                       <FormControl fullWidth>
                         <InputLabel>City</InputLabel>
@@ -193,6 +275,7 @@ function RestaurantInterface(){
                         </Select>
                       </FormControl>
                     </Grid>
+
                     <Grid item xs={4}>
                        <TextField onChange={(event)=>setUrl(event.target.value)} label="URL" fullWidth/>
                     </Grid>
@@ -200,9 +283,11 @@ function RestaurantInterface(){
                     <Grid item xs={4}>
                       <TextField onChange={(event)=>setFssai(event.target.value)} label="Fssai Number" fullWidth/>
                     </Grid>
+
                     <Grid item xs={4}>
                       <TextField onChange={(event)=>setGstNo(event.target.value)} label="GST Number" fullWidth/>
                     </Grid>
+
                     <Grid item xs={4}>
                       <FormControl fullWidth>
                         <InputLabel>GST Type</InputLabel>
@@ -216,9 +301,14 @@ function RestaurantInterface(){
                     
                     <Grid item xs={4}>
                       <Button fullWidth component="label" variant="contained" endIcon={<UploadIcon/>}>       
-                      <input hidden onChange={handleFssai} accept="image/*" multiple type="file"/>
+                      <input 
+                      onFocus={()=>handleError(false,'fileFssai','')}
+                      hidden onChange={handleFssai} accept="image/*" multiple type="file"/>
                       Upload Fssai
                       </Button>
+                      {
+                      resError?.fileFssai?.error?<div style={{color:"#d32f2f",fontFamily:'sans-serif',fontSize:'12px',margin:"4px 14px 0px"}}>{resError?.fileFssai?.message}</div>:<></>
+                      }
                     </Grid>
 
                     <Grid item xs={4}>
