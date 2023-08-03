@@ -209,12 +209,14 @@ function RestaurantInterface(){
                       label="Restaurant Name" onChange={(event)=>setRestaurantName(event.target.value)} fullWidth
                       />
                     </Grid>
+
                     <Grid item xs={6}>
                       <TextField 
                       onFocus={()=>handleError(false,'ownerName','')}
                       error={resError?.ownerName?.error}
                       helperText={resError?.ownerName?.message}
-                      onChange={(event)=>setOwnerName(event.target.value)} label="Owner Name" fullWidth/>
+                      onChange={(event)=>setOwnerName(event.target.value)} 
+                      label="Owner Name" fullWidth/>
                     </Grid>
 
                     <Grid item xs={4}>
@@ -226,7 +228,8 @@ function RestaurantInterface(){
                       onFocus={()=>handleError(false,'mobileNumber','')}
                       error={resError?.mobileNumber?.error}
                       helperText={resError?.mobileNumber?.message}
-                      onChange={(event)=>setMobileNumber(event.target.value)} label="Mobile Number" fullWidth/>
+                      onChange={(event)=>setMobileNumber(event.target.value)} 
+                      label="Mobile Number" fullWidth/>
                     </Grid>
 
                     <Grid item xs={4}>
@@ -249,7 +252,7 @@ function RestaurantInterface(){
                       <FormControl fullWidth>
                         <InputLabel>States</InputLabel>
                         <Select 
-                        onFocus={()=>handleError(false,'mobileNumber','')}
+                        onFocus={()=>handleError(false,'stateid','')}
                         error={resError?.stateid?.error}
                         helperText={resError?.stateid?.message}
                         onChange={handleStateChange} value={stateid} label="States">
@@ -300,7 +303,8 @@ function RestaurantInterface(){
                     </Grid>
                     
                     <Grid item xs={4}>
-                      <Button fullWidth component="label" variant="contained" endIcon={<UploadIcon/>}>       
+                      <Button fullWidth component="label" variant="contained" 
+                      endIcon={<UploadIcon/>}>       
                       <input 
                       onFocus={()=>handleError(false,'fileFssai','')}
                       hidden onChange={handleFssai} accept="image/*" multiple type="file"/>
@@ -313,13 +317,15 @@ function RestaurantInterface(){
 
                     <Grid item xs={4}>
                       <Button fullWidth component="label" variant="contained" endIcon={<UploadIcon/>}>
-                      <input hidden onChange={handleShopAct} accept="image/*" multiple type="file"/>
+                      <input hidden onChange={handleShopAct} 
+                      accept="image/*" multiple type="file"/>
                       Upload Shop Act
                       </Button>
                     </Grid>
 
                     <Grid item xs={4}>
-                      <Button fullWidth component="label" variant="contained" endIcon={<UploadIcon/>}>
+                      <Button fullWidth component="label" variant="contained" 
+                      endIcon={<UploadIcon/>}>
                       <input hidden onChange={handleLogo} accept="image/*" multiple type="file"/>
                       Upload Logo
                       </Button>
