@@ -44,8 +44,43 @@ router.get('/fetch_all_restaurant',function(req,res){
         res.status(200).json({status:true,message:'Restaurant Updated Successfully'})
     }
     
-    })
-    
+    }) 
+});
+
+router.post('/restaurant_edit_fssai',upload.any(), function(req, res, next) {
+  pool.query("update restaurants set filefssai=? where restaurantid=?",[req.files[0].filename, req.body.restaurantid],function(error,result){
+    if(error){
+    console.log(error);
+    res.status(200).json({status:false,message:"Database Error",});
+    }
+    else{
+      res.status(200).json({status:true,message:"Fssai Certificate Updated Successfully",});
+    }
+  });
+});
+
+router.post('/restaurant_edit_shopact',upload.any(), function(req, res, next) {
+  pool.query("update restaurants set fileshopact=? where restaurantid=?",[req.files[0].filename, req.body.restaurantid],function(error,result){
+    if(error){
+    console.log(error);
+    res.status(200).json({status:false,message:"Database Error",});
+    }
+    else{
+      res.status(200).json({status:true,message:"Shopact Certificate Updated Successfully",});
+    }
+  });
+});
+
+router.post('/restaurant_edit_logo',upload.any(), function(req, res, next) {
+  pool.query("update restaurants set filelogo=? where restaurantid=?",[req.files[0].filename, req.body.restaurantid],function(error,result){
+    if(error){
+    console.log(error);
+    res.status(200).json({status:false,message:"Database Error",});
+    }
+    else{
+      res.status(200).json({status:true,message:"Logo Certificate Updated Successfully",});
+    }
+  });
 });
 
 module.exports = router;

@@ -5,7 +5,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 
-import { Avatar,Grid,TextField,Button,Select,FormHelperText } from "@mui/material";
+import { Snackbar,Avatar,Grid,TextField,Button,Select,FormHelperText } from "@mui/material";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -75,9 +75,12 @@ export default function DisplayAllRestaurant()
   const [gstType,setGstType]=useState('')
   const [fileFssai,setFileFssai]=useState({url:'',bytes:''})
   const [fileShopAct,setFileShopAct]=useState({url:'',bytes:''})
-  const [fileLogo,setFileLogo]=useState({url:'',bytes:''})
+  const [fileLogo,setFileLogo]=useState({url:'',bytes:''});
+  const [tempFile,setTempFile]=useState({fssai:'',shopAct:'',logo:''})
   const [address,setAddress]=useState('')
   const [resError,setResError]=useState({});
+  const [btnStatus,setBtnStatus]=useState({fssai:false,shopAct:false,logo:false});
+
 
 
   const handleError = (error,input,message)=>{
@@ -164,13 +167,18 @@ export default function DisplayAllRestaurant()
   }
 
   const handleFssai=(event)=>{
-    setFileFssai({url:URL.createObjectURL(event.target.files[0]),bytes:event.target.files[0]})
+    setFileFssai({url:URL.createObjectURL(event.target.files[0]),bytes:event.target.files[0]});
+    setBtnStatus((prev)=>({...prev,fssai:true}));
   }
+
   const handleShopAct=(event)=>{
-    setFileShopAct({url:URL.createObjectURL(event.target.files[0]),bytes:event.target.files[0]})
+    setFileShopAct({url:URL.createObjectURL(event.target.files[0]),bytes:event.target.files[0]});
+    setBtnStatus((prev)=>({...prev,shopAct:true}));
   }
+
   const handleLogo=(event)=>{
-    setFileLogo({url:URL.createObjectURL(event.target.files[0]),bytes:event.target.files[0]})
+    setFileLogo({url:URL.createObjectURL(event.target.files[0]),bytes:event.target.files[0]});
+    setBtnStatus((prev)=>({...prev,logo:true}));
   };
 
   //////////?....form data////////////////////////////////////////////
@@ -219,10 +227,114 @@ export default function DisplayAllRestaurant()
           setOpen(false)
         }
       } 
-      fetcchAllRestaurrant()   
+      fetchAllRestaurant()   
   }
   //////////////////?.////////////////////////////////////
-  const fetcchAllRestaurrant=async()=>{
+  const handleCancel=(imgStatus)=>{
+    if(imgStatus==1)
+    {
+    setBtnStatus((prev)=>({...prev,fssai:false}));
+    setFileFssai({url:tempFile.fssai,bytes:''})
+    }
+    else if(imgStatus==2)
+    {
+    setBtnStatus((prev)=>({...prev,shopAct:false}));
+    setFileShopAct({url:tempFile.shopAct,bytes:''})
+    } 
+    else if(imgStatus==3)
+    {
+    setBtnStatus((prev)=>({...prev,logo:false}));
+    setFileLogo({url:tempFile.logo,bytes:''})
+    }   
+  }
+
+  const editImage=async(imgStatus)=>{
+    if(imgStatus==1)
+    {
+    const formData = new FormData();
+    formData.append('restaurantid',restaurantId);
+    formData.append('filefssai',fileFssai.bytes);
+    
+    const result=await postData('restaurants/restaurant_edit_fssai',formData)
+
+    if(result.status)
+    {  
+      Swal.fire({
+        icon:'success',
+        title:'Restaurant Registration',
+        text:result.message
+      })
+    }
+    else{
+      Swal.fire({
+        icon:'error',
+        title:'Oops........',
+        text:result.message
+      })
+    }
+    setBtnStatus((prev)=>({...prev,fssai:false}));
+    }
+    else if(imgStatus==2)
+    {
+    const formData = new FormData();
+    formData.append('restaurantid',restaurantId);
+    formData.append('fileshopact',fileShopAct.bytes);
+    
+    const result=await postData('restaurants/restaurant_edit_shopact',formData)
+
+    if(result.status)
+    {  
+      Swal.fire({
+        icon:'success',
+        title:'Restaurant Registration',
+        text:result.message
+      })
+    }
+    else{
+      Swal.fire({
+        icon:'error',
+        title:'Oops........',
+        text:result.message
+      })
+    }
+    setBtnStatus((prev)=>({...prev,shopAct:false}));
+    }
+    else if(imgStatus==3)
+    {
+    const formData = new FormData();
+    formData.append('restaurantid',restaurantId);
+    formData.append('filelogo',fileLogo.bytes);
+    
+    const result=await postData('restaurants/restaurant_edit_logo',formData)
+
+    if(result.status)
+    {  
+      Swal.fire({
+        icon:'success',
+        title:'Restaurant Registration',
+        text:result.message
+      })
+    }
+    else{
+      Swal.fire({
+        icon:'error',
+        title:'Oops........',
+        text:result.message
+      })
+    }
+    setBtnStatus((prev)=>({...prev,logo:false}));
+    }
+    fetchAllRestaurant()
+}
+
+  const editDeleteButton=(imgStatus)=>{
+    return(<div>
+      <Button onClick={()=>editImage(imgStatus)}>Edit</Button>
+      <Button onClick={()=>handleCancel(imgStatus)}>Cancel</Button>
+    </div>)
+  }
+
+  const fetchAllRestaurant=async()=>{
     var result=await getData('restaurants/fetch_all_restaurant')
     setListRestaurant(result.data)
   }
@@ -248,6 +360,8 @@ export default function DisplayAllRestaurant()
     setFileFssai({url:`${serverURL}/images/${rowData.filefssai}`,bytes:''});
     setFileLogo({url:`${serverURL}/images/${rowData.filelogo}`,bytes:''});
     setFileShopAct({url:`${serverURL}/images/${rowData.fileshopact}`,bytes:''});
+    setTempFile({fssai:`${serverURL}/images/${rowData.filefssai}`,shopAct:`${serverURL}/images/${rowData.fileshopact}`,logo:`${serverURL}/images/${rowData.filelogo}`})
+
     setOpen(true)
   }
 
@@ -406,6 +520,9 @@ export default function DisplayAllRestaurant()
                   src={fileFssai.url}
                   sx={{ width: 56, height: 56 }}
                 />
+                <div>
+                  {btnStatus.fssai?editDeleteButton(1):<></>}
+                </div>
               </Grid>
 
               <Grid item xs={4} className={classes.center}>
@@ -415,6 +532,9 @@ export default function DisplayAllRestaurant()
                   src={fileShopAct.url}
                   sx={{ width: 56, height: 56 }}
                 />
+                <div>
+                  {btnStatus.shopAct?editDeleteButton(2):<></>}
+                </div>
               </Grid>
 
               <Grid item xs={4} className={classes.center}>
@@ -424,6 +544,9 @@ export default function DisplayAllRestaurant()
                   src={fileLogo.url}
                   sx={{ width: 56, height: 56 }}
                 />
+                <div>
+                  {btnStatus.logo?editDeleteButton(3):<></>}
+                </div>
               </Grid>
               
           </Grid>
@@ -447,7 +570,7 @@ export default function DisplayAllRestaurant()
   }
 
   useEffect(function(){
-    fetcchAllRestaurrant()
+    fetchAllRestaurant()
   },[])
   
   function displayAll() {
