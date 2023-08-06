@@ -213,9 +213,13 @@ export default function DisplayAllRestaurant()
           Swal.fire({
             icon: 'success',
             title: 'Restaurant Registration',
-            text: result.message
+            text: result.message,
+            position:'top-end',
+            timer:5000,
+            showConfirmButton:false,
+            toast:true
           })
-          setOpen(false)
+         // setOpen(false)
         }
         else
         {
@@ -223,11 +227,15 @@ export default function DisplayAllRestaurant()
             icon: 'error',
             title: 'Oops...',
             text: result.message,
+            position:'top-end',
+            timer:5000,
+            showConfirmButton:false,
+            toast:true
           })
-          setOpen(false)
+         
         }
       } 
-      fetchAllRestaurant()   
+      //fetchAllRestaurant()   
   }
   //////////////////?.////////////////////////////////////
   const handleCancel=(imgStatus)=>{
@@ -262,14 +270,22 @@ export default function DisplayAllRestaurant()
       Swal.fire({
         icon:'success',
         title:'Restaurant Registration',
-        text:result.message
+        text:result.message,
+        position:'top-end',
+            timer:5000,
+            showConfirmButton:false,
+            toast:true
       })
     }
     else{
       Swal.fire({
         icon:'error',
         title:'Oops........',
-        text:result.message
+        text:result.message,
+        position:'top-end',
+            timer:5000,
+            showConfirmButton:false,
+            toast:true
       })
     }
     setBtnStatus((prev)=>({...prev,fssai:false}));
@@ -287,14 +303,22 @@ export default function DisplayAllRestaurant()
       Swal.fire({
         icon:'success',
         title:'Restaurant Registration',
-        text:result.message
+        text:result.message,
+        position:'top-end',
+            timer:5000,
+            showConfirmButton:false,
+            toast:true
       })
     }
     else{
       Swal.fire({
         icon:'error',
         title:'Oops........',
-        text:result.message
+        text:result.message,
+        position:'top-end',
+            timer:5000,
+            showConfirmButton:false,
+            toast:true
       })
     }
     setBtnStatus((prev)=>({...prev,shopAct:false}));
@@ -312,19 +336,27 @@ export default function DisplayAllRestaurant()
       Swal.fire({
         icon:'success',
         title:'Restaurant Registration',
-        text:result.message
+        text:result.message,
+        position:'top-end',
+            timer:5000,
+            showConfirmButton:false,
+            toast:true
       })
     }
     else{
       Swal.fire({
         icon:'error',
         title:'Oops........',
-        text:result.message
+        text:result.message,
+        position:'top-end',
+            timer:5000,
+            showConfirmButton:false,
+            toast:true
       })
     }
     setBtnStatus((prev)=>({...prev,logo:false}));
     }
-    fetchAllRestaurant()
+    // fetchAllRestaurant()
 }
 
   const editDeleteButton=(imgStatus)=>{
@@ -339,7 +371,8 @@ export default function DisplayAllRestaurant()
     setListRestaurant(result.data)
   }
   const handleDialogClose=()=>{
-    setOpen(false)
+    setOpen(false);
+    fetchAllRestaurant()
   }
 
   const handleEdit=(rowData)=>{
@@ -569,6 +602,31 @@ export default function DisplayAllRestaurant()
     )
   }
 
+  const handleDelete=async(rowData)=>{
+      Swal.fire({
+        title: 'Do you want to delete the record?',
+        showDenyButton: true,
+        //showCancelButton: true,
+        confirmButtonText: 'Delete',
+        denyButtonText: `Don't Delete`,
+      }).then(async(result) => {
+        /* Read more about isConfirmed, isDenied below */
+        ///hh
+        if (result.isConfirmed) {
+          const body={'restaurantid':rowData.restaurantid};
+          const result=await postData('restaurants/restaurant_delete',body);
+          if(result.status)
+          {Swal.fire('Deleted!', '', result.message);
+           fetchAllRestaurant()}
+          else
+          Swal.fire('Fail!', '', result.message);
+        } else if (result.isDenied) {
+          Swal.fire('Restaurant not Deleted', '', 'info')
+        }
+      })
+       
+  }
+
   useEffect(function(){
     fetchAllRestaurant()
   },[])
@@ -579,7 +637,7 @@ export default function DisplayAllRestaurant()
         title="Restaurants List"
         columns={[
           { title: 'Restaurant', render:rowData=><><div>{rowData.restaurantname}</div><div>{rowData.ownername}</div></>},
-          { title: 'Address',render:rowData=><><div>{rowData.address}</div><div>{rowData.cityid},{rowData.stateid}</div></> },
+          { title: 'Address',render:rowData=><><div>{rowData.address}</div><div>{rowData.cityname},{rowData.statename}</div></> },
           {title:'Contact',render:rowData=><><div>{rowData.phonenumber}</div><div>{rowData.mobileno}</div><div>{rowData.emailid}</div></>},
           {title:'Documents',render:rowData=><><div>SA:{rowData.gstno}/{rowData.gsttype}</div><div>Fssai:{rowData.fssai}</div><div>{rowData.emailid}</div></>},
           {title:'Website',render:rowData=><><a href="{rowData.url}">Visit</a></>},
@@ -590,12 +648,18 @@ export default function DisplayAllRestaurant()
         actions={[
           {
             icon: 'edit',
-            tooltip: 'Edit User',
+            tooltip: 'Edit Restaurant',
             onClick: (event, rowData) => handleEdit(rowData)
           },
           {
             icon: 'delete',
-            tooltip: 'Delete User',
+            tooltip: 'Delete Restaurant',
+            onClick: (event, rowData) => handleDelete(rowData)
+          },
+          {
+            icon: 'add',
+            tooltip: 'Add Restaurant',
+            isFreeAction: true,
             onClick: (event, rowData) => alert("You want to delete " + rowData.name)
           }
         ]}

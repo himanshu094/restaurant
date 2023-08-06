@@ -8,7 +8,8 @@ var cors=require('cors')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var statecityRouter = require('./routes/statecity');
-const restaurantRouter = require('./routes/restaurant')
+const restaurantRouter = require('./routes/restaurant');
+const categoryRouter=require('./routes/category')
 
 var app = express();
 
@@ -25,8 +26,9 @@ app.use(cors())
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/statecity',statecityRouter)
-app.use('/restaurants',restaurantRouter)
+app.use('/statecity',statecityRouter);
+app.use('/restaurants',restaurantRouter);
+app.use('/category',categoryRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

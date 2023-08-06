@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 const pool=require("./pool");
-const multer=require("./multer");
 const upload = require('./multer');
 /* GET home page. */
 
@@ -19,7 +18,7 @@ router.post('/restaurant_submit',upload.any(), function(req, res, next) {
 });
 
 router.get('/fetch_all_restaurant',function(req,res){
-  pool.query('select * from restaurants',function(error,result){
+  pool.query('select R.*,(select S.statename from states S where S.stateid=R.stateid) as statename,(select C.cityname from city C where C.cityid=R.cityid) as cityname from restaurants R',function(error,result){
     if(error){
       console.log(error);
       res.status(200).json({status:false,message:"Database Error",data:[]});
@@ -66,7 +65,7 @@ router.post('/restaurant_edit_shopact',upload.any(), function(req, res, next) {
     res.status(200).json({status:false,message:"Database Error",});
     }
     else{
-      res.status(200).json({status:true,message:"Shopact Certificate Updated Successfully",});
+      res.status(200).json({status:true,message:"ShopAct Certificate Updated Successfully",});
     }
   });
 });
@@ -78,7 +77,19 @@ router.post('/restaurant_edit_logo',upload.any(), function(req, res, next) {
     res.status(200).json({status:false,message:"Database Error",});
     }
     else{
-      res.status(200).json({status:true,message:"Logo Certificate Updated Successfully",});
+      res.status(200).json({status:true,message:"Logo Updated Successfully",});
+    }
+  });
+});
+
+router.post('/restaurant_delete',upload.any(), function(req, res, next) {
+  pool.query("delete from restaurants where restaurantid=?",[req.body.restaurantid],function(error,result){
+    if(error){
+    console.log(error);
+    res.status(200).json({status:false,message:"Database Error",});
+    }
+    else{
+      res.status(200).json({status:true,message:"Restaurant Deleted Successfully",});
     }
   });
 });
