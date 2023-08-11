@@ -10,9 +10,9 @@ export default function CategoryInterface()
 { const classes=useStyles();
 
   ///? useStates///////////////////////////
-  const [restaurantId,setRestaurantId]=useState();
-  const [categoryName,setCategoryName]=useState();
-  const [fileIcon,setFileIcon]=useState({url:'',bytes:''});
+  const [restaurantId,setRestaurantId]=useState("");
+  const [categoryName,setCategoryName]=useState("");
+  const [icon,setIcon]=useState({url:'',bytes:''});
   const [categoryError,setCategoryError]=useState({});
 
   const handleError=(error,input,message)=>{
@@ -23,21 +23,22 @@ export default function CategoryInterface()
   const validation=()=>
   {  let submitRecord=true
 
-     if(!restaurantId)
+     if(restaurantId.trim().length==0)
      {
       handleError(true,'restaurantId',"Pls Input Restaurant Id"); 
       submitRecord=false;
      }
 
-     //if(categoryName.trim().length==0)
-     if(!categoryName)
+     if(categoryName.trim().length==0)
+     //if(!categoryName)
      {
+      
       handleError(true,'categoryName',"Pls Input Category Name"); 
       submitRecord=false;
      }
-     if(!fileIcon.url)
+     if(!icon.url)
     {
-     handleError(true,'fileIcon',"Pls Upload Icon")
+     handleError(true,'icon',"Pls Upload Icon")
       
      submitRecord=false
     }
@@ -46,7 +47,7 @@ export default function CategoryInterface()
   } 
 
   const handleIcon=(event)=>{
-    setFileIcon({url:URL.createObjectURL(event.target.files[0]),bytes:event.target.files[0]})  
+    setIcon({url:URL.createObjectURL(event.target.files[0]),bytes:event.target.files[0]})  
   }
 
   ///? formData///////////////////////////
@@ -56,7 +57,7 @@ export default function CategoryInterface()
     var formData=new FormData()
     formData.append('restaurantid',restaurantId);
     formData.append('categoryname',categoryName);
-    formData.append('fileicon',fileIcon.bytes)
+    formData.append('icon',icon.bytes)
     
     var result=await postData('category/category_submit',formData);
     if(result.status)
@@ -111,11 +112,11 @@ export default function CategoryInterface()
           <input hidden onChange={handleIcon}
               accept="image/*"
               type="file"
-              onFocus={()=>handleError(false,'fileIcon','')}
+              onFocus={()=>handleError(false,'icon','')}
           />
             Upload Icon
           </Button>
-          {categoryError?.fileIcon?.error?<div style={{color:"#d32f2f",fontFamily:'sans-serif',fontSize:'12px',margin:"4px 14px 0px"}}>{categoryError?.fileIcon?.message}</div>:<></> }
+          {categoryError?.icon?.error?<div style={{color:"#d32f2f",fontFamily:'sans-serif',fontSize:'12px',margin:"4px 14px 0px"}}>{categoryError?.icon?.message}</div>:<></> }
         </Grid>
         <Grid item xs={6}>
             </Grid>
@@ -124,7 +125,7 @@ export default function CategoryInterface()
             <Avatar
               variant="rounded"
               alt="Remy Sharp"
-              src={fileIcon.url}
+              src={icon.url}
               sx={{ width: 56, height: 56 }}
             />
           </Grid>

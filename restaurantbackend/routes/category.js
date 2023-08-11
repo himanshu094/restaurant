@@ -4,7 +4,7 @@ const pool=require("./pool");
 const upload = require('./multer');
 
 router.post('/category_submit',upload.any(), function(req, res, next) {
-  pool.query("insert into category (restaurantid,categoryname,fileicon)values(?,?,?)",[ req.body.restaurantid,req.body.categoryname,req.files[0].filename],function(error,result){
+  pool.query("insert into category (restaurantid,categoryname,icon)values(?,?,?)",[ req.body.restaurantid,req.body.categoryname,req.files[0].filename],function(error,result){
   if(error)
   {
       console.log("Errorrr",error);
@@ -53,7 +53,7 @@ router.post('/category_submit',upload.any(), function(req, res, next) {
 
 
       router.post('/category_edit_icon',upload.any(), function(req, res, next) {
-        pool.query("update category set fileicon=? where categoryid=?",[ req.files[0].filename,req.body.categoryid],function(error,result){
+        pool.query("update category set icon=? where categoryid=?",[ req.files[0].filename,req.body.categoryid],function(error,result){
         if(error)
         {
             console.log("Errorrr",error);

@@ -9,7 +9,9 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var statecityRouter = require('./routes/statecity');
 const restaurantRouter = require('./routes/restaurant');
-const categoryRouter=require('./routes/category')
+const categoryRouter=require('./routes/category');
+const fooditemRouter=require('./routes/fooditem');
+const tablebookingRouter=require('./routes/tablebooking')
 
 var app = express();
 
@@ -29,6 +31,8 @@ app.use('/users', usersRouter);
 app.use('/statecity',statecityRouter);
 app.use('/restaurants',restaurantRouter);
 app.use('/category',categoryRouter);
+app.use('/fooditem',fooditemRouter);
+app.use('/tablebooking',tablebookingRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

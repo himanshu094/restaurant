@@ -1,3 +1,6 @@
+//! showdata =>showDataInDialog ///////////
+//? showDataForEdit => showDialogForEdit ////////
+
 import { useStyles } from "./DisplayAllCategoryCss";
 import {useState,useEffect} from 'react'
 import MaterialTable from "@material-table/core"
@@ -15,7 +18,7 @@ export default function DisplayAllCategory()
 
   const [restaurantId,setRestaurantId]=useState();
   const [categoryName,setCategoryName]=useState();
-  const [fileIcon,setFileIcon]=useState({url:'',bytes:''});
+  const [icon,setIcon]=useState({url:'',bytes:''});
   const [categoryId,setCategoryId]=useState("");
   const [categoryError,setCategoryError]=useState({});
   const [btnStatus,setBtnStatus]=useState(false)
@@ -41,9 +44,9 @@ export default function DisplayAllCategory()
       handleError(true,'categoryName',"Pls Input Category Name"); 
       submitRecord=false;
      }
-     if(!fileIcon.url)
+     if(!icon.url)
     {
-     handleError(true,'fileIcon',"Pls Upload Icon")
+     handleError(true,'icon',"Pls Upload Icon")
       
      submitRecord=false
     }
@@ -52,7 +55,7 @@ export default function DisplayAllCategory()
   } 
 
   const handleIcon=(event)=>{
-    setFileIcon({url:URL.createObjectURL(event.target.files[0]),bytes:event.target.files[0]});
+    setIcon({url:URL.createObjectURL(event.target.files[0]),bytes:event.target.files[0]});
     setBtnStatus(true)  
   }
 
@@ -100,13 +103,13 @@ export default function DisplayAllCategory()
 
   const handleCancel=()=>{
     setBtnStatus(false);
-    setFileIcon(tempFile)
+    setIcon(tempFile)
   }
 
   const editImage=async()=>{
     var formData=new FormData()
     formData.append('categoryid',categoryId)
-    formData.append('fileicon',fileIcon.bytes)
+    formData.append('icon',icon.bytes)
 
     var result=await postData('category/category_edit_icon',formData)
     if(result.status)
@@ -156,9 +159,9 @@ export default function DisplayAllCategory()
   const handleEdit=(rowData)=>{
     setRestaurantId(rowData.restaurantid);
     setCategoryName(rowData.categoryname);
-    setFileIcon({url:`${serverURL}/images/${rowData.fileicon}`,bytes:''})
+    setIcon({url:`${serverURL}/images/${rowData.icon}`,bytes:''})
     setCategoryId(rowData.categoryid);
-    setTempFile({url:`${serverURL}/images/${rowData.fileicon}`,bytes:''})
+    setTempFile({url:`${serverURL}/images/${rowData.icon}`,bytes:''})
 
     setOpen(true); 
   }
@@ -201,11 +204,11 @@ export default function DisplayAllCategory()
             <input hidden onChange={handleIcon}
                 accept="image/*"
                 type="file"
-                onFocus={()=>handleError(false,'fileIcon','')}
+                onFocus={()=>handleError(false,'icon','')}
             />
               Upload Icon
             </Button>
-            {categoryError?.fileIcon?.error?<div style={{color:"#d32f2f",fontFamily:'sans-serif',fontSize:'12px',margin:"4px 14px 0px"}}>{categoryError?.fileIcon?.message}</div>:<></> }
+            {categoryError?.icon?.error?<div style={{color:"#d32f2f",fontFamily:'sans-serif',fontSize:'12px',margin:"4px 14px 0px"}}>{categoryError?.icon?.message}</div>:<></> }
           </Grid>
           <Grid item xs={6}>
               </Grid>
@@ -214,7 +217,7 @@ export default function DisplayAllCategory()
               <Avatar
                 variant="rounded"
                 alt="Remy Sharp"
-                src={fileIcon.url}
+                src={icon.url}
                 sx={{ width: 56, height: 56 }}
               />
               <div>
@@ -278,12 +281,12 @@ export default function DisplayAllCategory()
   function displayAll() {
     return (
       <MaterialTable
-        title="Restaurant List"
+        title="Category List"
         columns={[
           { title: 'RestaurantId', field: 'restaurantid' },
           { title: 'CategoryName', field: 'categoryname' },
           { title: 'Icon', 
-              render:rowData=><div><img src={`${serverURL}/images/${rowData.fileicon}`}  style={{width:50,height:50,borderRadius:10}} /></div> }
+              render:rowData=><div><img src={`${serverURL}/images/${rowData.icon}`}  style={{width:50,height:50,borderRadius:10}} /></div> }
           
         ]}
         data={listCategory}        
