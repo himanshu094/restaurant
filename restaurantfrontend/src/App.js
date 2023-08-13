@@ -6,6 +6,7 @@ import DisplayAllCategory from "./screens/category/DisplayAllCategory";
 import FoodItemInterface from "./screens/fooditem/FoodItemInterface";
 import DisplayAllFoodItem from "./screens/fooditem/DisplayAllFoodItem";
 import TableBookingInterface from "./screens/tablebooking/TableBookingInterface";
+import DisplayAllTable from "./screens/tablebooking/DisplayAllTable";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route element={<FoodItemInterface/>} path='/f1'/>
           <Route element={<DisplayAllFoodItem/>} path='/f2'/>
           <Route element={<TableBookingInterface/>} path='/t1'/>
+          <Route element={<DisplayAllTable/>} path='/t2'/>          
         </Routes>
       </Router>
     </div>
