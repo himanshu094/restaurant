@@ -13,12 +13,13 @@ import { UploadFile } from "@mui/icons-material";
 
 const useStyles = makeStyles({
   root: {
-    width:"100vw",
-    height:"120vh",
+    width:"auto",
+    height:"100%",
     background:"#dfe4ea",
     display:"flex",
     alignItems:"center",
-    justifyContent:"center"
+    justifyContent:"center",
+    paddingBlock:'10px'
   },
   box:{
     width:"60%",
@@ -54,8 +55,13 @@ function RestaurantInterface(){
   const [fileFssai,setFileFssai]=useState({url:'',bytes:''})
   const [fileShopAct,setFileShopAct]=useState({url:'',bytes:''})
   const [fileLogo,setFileLogo]=useState({url:'',bytes:''})
-  const [address,setAddress]=useState('')
+  const [address,setAddress]=useState('');
   const [resError,setResError]=useState({});
+
+   const generatePassword=()=>{
+      const pwd=(Math.random()*8999)+1000;
+      return parseInt(pwd)
+   }
 
   const handleError = (error,input,message)=>{
     setResError(prevState => ({...prevState,[input]:{'error':error,'message':message}}));
@@ -167,6 +173,7 @@ function RestaurantInterface(){
         formData.append('filelogo',fileLogo.bytes);
         formData.append('fileshopact',fileShopAct.bytes);
         formData.append('filefssai',fileFssai.bytes);
+        formData.append('password',generatePassword())
         const d=new Date();
         const cd=d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
         formData.append('createdat',cd);

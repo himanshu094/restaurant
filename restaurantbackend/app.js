@@ -11,7 +11,9 @@ var statecityRouter = require('./routes/statecity');
 const restaurantRouter = require('./routes/restaurant');
 const categoryRouter=require('./routes/category');
 const fooditemRouter=require('./routes/fooditem');
-const tablebookingRouter=require('./routes/tablebooking')
+const tablebookingRouter=require('./routes/tablebooking');
+const waiterRouter=require('./routes/waiter');
+const superadminRouter=require('./routes/superadmin')
 
 var app = express();
 
@@ -32,7 +34,9 @@ app.use('/statecity',statecityRouter);
 app.use('/restaurants',restaurantRouter);
 app.use('/category',categoryRouter);
 app.use('/fooditem',fooditemRouter);
-app.use('/tablebooking',tablebookingRouter)
+app.use('/tablebooking',tablebookingRouter);
+app.use('/waiter',waiterRouter);
+app.use('/superadmin',superadminRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
