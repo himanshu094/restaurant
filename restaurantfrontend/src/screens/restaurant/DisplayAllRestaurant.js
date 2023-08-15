@@ -26,7 +26,7 @@ const useStyles = makeStyles({
     justifyContent:"center"
   },
   boxdisplay:{
-    width:"80%",
+    width:"92%",
     height:"auto",
     borderRadius:10,
     background:"#fff",

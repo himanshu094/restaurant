@@ -31,19 +31,19 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function LoginPage() {
+export default function AdminLogin() {
   const [emailId,setEmailId]=useState("");
   const [password,setPassword]=useState("");
   const navigate=useNavigate();
 
   const handleClick=async()=>{
-    const body={'emailid':emailId,     
-           'password':password}
-    const result=await postData('superadmin/checklogin',body);
+    const body={'emailid':emailId,    
+            'password':password}
+    const result=await postData('admin/checklogin',body);
     
     if(result.status)
     {
-        navigate('/dashboard') 
+        navigate('/admindashboard') 
     }
     else
     {

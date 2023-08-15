@@ -22,7 +22,7 @@ const useStyles = makeStyles({
     paddingBlock:'10px'
   },
   box:{
-    width:"60%",
+    width:"70%",
     height:"auto",
     borderRadius:10,
     background:"#fff",
@@ -202,7 +202,7 @@ function RestaurantInterface(){
 
   return(<div className={classes.root}>
             <div className={classes.box}>
-                <Grid container spacing={2}>
+                <Grid container spacing={1.5}>
 
                     <Grid item xs={12} className={classes.heading}>
                       <Heading title={"Restaurant Register"}/>

@@ -3,7 +3,7 @@ import { makeStyles } from "@mui/styles";
 export const useStyles = makeStyles({
   root: {
     width:"auto",
-    height:"100vh",
+    height:"auto",
     background:"#dfe4ea",
     display:"flex",
     alignItems:"center",
@@ -14,7 +14,8 @@ export const useStyles = makeStyles({
     height:"auto",
     borderRadius:10,
     background:"#fff",
-    padding:15
+    padding:15,
+    marginBlock:'40px'
   },
   center:{
     display:"flex",

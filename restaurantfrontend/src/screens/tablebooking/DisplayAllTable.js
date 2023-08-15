@@ -39,25 +39,25 @@ export default function DisplayAllTable()
     //  alert(floor)
     //  alert(tableNo)
     //  alert(noOfChairs)   
-    //if(restaurantId.trim().length===0)
-    if(!restaurantId)
+    if(restaurantId.trim().length===0)
+    //if(!restaurantId)
     {
       handleError(true,'restaurantId',"please Input Restaurant Id")
       submitRecord=false
     }
-    //if(noOfChairs.trim().length===0)
-    if(!noOfChairs)
+    if(noOfChairs.trim().length===0)
+    //if(!noOfChairs)
     {
       handleError(true,'noOfChairs',"please Input No of Chairs")
       submitRecord=false
     }
-    //if(tableNo.trim().length===0)
-    if(!tableNo)
+    if(tableNo.trim().length===0)
+    //if(!tableNo)
     {
       handleError(true,'tableNo',"please Input Table No")
       submitRecord=false
     }
-    //if(floor.trim().length===0)
+   
     if(!floor)
     {
       handleError(true,'floor',"please Input floor")
@@ -69,7 +69,7 @@ export default function DisplayAllTable()
 
   const handleSubmit=async()=>{
     console.log(restaurantId,floor,tableNo,noOfChairs);
-    if(validation()){
+    if(true){
 
       const body={'restaurantid':restaurantId,
                   'floor':floor,
@@ -84,7 +84,11 @@ export default function DisplayAllTable()
         Swal.fire({
           icon: 'success',
           title: 'Table',
-          text: result.message
+          text: result.message,
+          position:'top-end',
+            timer:5000,
+            showConfirmButton:false,
+            toast:true
         })
       }
       else
@@ -93,6 +97,10 @@ export default function DisplayAllTable()
           icon: 'error',
           title: 'Oops...',
           text: result.message,
+          position:'top-end',
+            timer:5000,
+            showConfirmButton:false,
+            toast:true
         })
       }
     }    
@@ -273,5 +281,4 @@ export default function DisplayAllTable()
        {showDialogForEdit()}
     </div>
    )
-
 }

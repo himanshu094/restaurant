@@ -20,16 +20,16 @@ export default function Dashboard(props){
   const classes=useStyles();
   const navigate=useNavigate();
   return(
-    <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
+    <Box sx={{ flexGrow: 1 }} >
+        <AppBar position="sticky"> 
           <Toolbar variant="dense"> 
             <Typography variant="h6" color="inherit" component="div">
               Super Admin
             </Typography>
           </Toolbar>
         </AppBar>
-        <Grid container spaces={3} style={{paddingInlineStart:5}}>
-          <Grid item xs={2}>
+        <Grid container spaces={3} style={{paddingInlineStart:5}} >
+          <Grid item xs={2.2} >
             <Paper >
               <div className={classes.leftBarStyle}>
                 <Avatar src='' variant="circular" style={{width:80,height:80}}/> 
@@ -69,7 +69,7 @@ export default function Dashboard(props){
               </div> 
             </Paper>
           </Grid> 
-          <Grid item xs={10} style={{paddingLeft:5,paddingTop:10}}>
+          <Grid item xs={9.8} style={{paddingLeft:5,paddingTop:10}}>
             <Routes>
               <Route element={<RestaurantInterface/>} path='/restaurantinterface'/>
               <Route element={<DisplayAllRestaurant/>} path='/displayallrestaurant' />

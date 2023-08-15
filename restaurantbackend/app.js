@@ -13,7 +13,9 @@ const categoryRouter=require('./routes/category');
 const fooditemRouter=require('./routes/fooditem');
 const tablebookingRouter=require('./routes/tablebooking');
 const waiterRouter=require('./routes/waiter');
-const superadminRouter=require('./routes/superadmin')
+const superadminRouter=require('./routes/superadmin');
+const adminRouter=require('./routes/admin');
+const waitertableRouter=require('./routes/waitertable')
 
 var app = express();
 
@@ -37,6 +39,8 @@ app.use('/fooditem',fooditemRouter);
 app.use('/tablebooking',tablebookingRouter);
 app.use('/waiter',waiterRouter);
 app.use('/superadmin',superadminRouter);
+app.use('/admin',adminRouter);
+app.use('/waitertable',waitertableRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

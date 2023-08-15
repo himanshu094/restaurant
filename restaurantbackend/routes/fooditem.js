@@ -75,7 +75,7 @@ router.post('/fooditem_submit',upload.any(), function(req, res, next) {
       }
       
       })
-      });
+    });
 
       router.post('/fooditem_edit_icon',upload.any(), function(req, res, next) {
         pool.query("update fooditems set icon=? where fooditemid=?",[ req.files[0].filename,req.body.fooditemid],function(error,result){
@@ -88,11 +88,11 @@ router.post('/fooditem_submit',upload.any(), function(req, res, next) {
         else
         {
             res.status(200).json({status:true,message:'Icon Updated Successfully'})
-        }
-        
+        }   
         })
-        });
+      });
 
+      
         router.post('/fooditem_delete',upload.any(), function(req, res, next) {
           pool.query("delete from fooditems where fooditemid=?",[ req.body.fooditemid],function(error,result){
           if(error)
@@ -107,7 +107,7 @@ router.post('/fooditem_submit',upload.any(), function(req, res, next) {
           }
           
           })
-          });
+        });
 
 
 

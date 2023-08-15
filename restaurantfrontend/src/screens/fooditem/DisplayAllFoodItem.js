@@ -86,7 +86,7 @@ export default function DisplayAllFoodItem()
   }
 
   const handleSubmit=async()=>{
-    if(validation()){
+    if(true){
       const body={'restaurantid':restaurantId,'categoryid':categoryId,
       'fooditemname':foodItemName,
       'foodtype':foodType,
@@ -94,7 +94,7 @@ export default function DisplayAllFoodItem()
       'price':price,
       'offerprice':offerPrice,
       'icon':iconData.bytes,
-       'fooditemid':foodItemId}
+      'fooditemid':foodItemId}
 
       const result=await postData('fooditem/fooditem_edit_data',body);
       
@@ -103,7 +103,11 @@ export default function DisplayAllFoodItem()
         Swal.fire({
           icon: 'success',
           title: 'Food Item Update',
-          text: result.message
+          text: result.message,
+          position:'top-end',
+            timer:5000,
+            showConfirmButton:false,
+            toast:true
         })
       }
       else
@@ -112,6 +116,10 @@ export default function DisplayAllFoodItem()
           icon: 'error',
           title: 'Oops...',
           text: result.message,
+          position:'top-end',
+            timer:5000,
+            showConfirmButton:false,
+            toast:true
         })
       }
     }    
@@ -160,7 +168,7 @@ export default function DisplayAllFoodItem()
   setBtnStatus(false)
 }
 
-   const editDeleteButton=()=>{
+  const editDeleteButton=()=>{
     return(<div>
       <Button onClick={editImage}>Edit</Button>
       <Button onClick={handleCancel}>Cancel</Button>

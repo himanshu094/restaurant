@@ -1,5 +1,5 @@
 import { useStyles } from "./WaiterInterfaceCss";
-import {Grid,TextField,Button,Select,InputLabel,MenuItem,FormControl,FormHelperText,Avatar} from '@mui/material';
+import {Grid,TextField,Button,FormControl,Avatar} from '@mui/material';
 import Heading from "../../components/heading/Heading";
 import { UploadFile } from "@mui/icons-material";
 
@@ -43,42 +43,56 @@ export default function WaiterInterface(){
     const m=String(Number(event.$M)+1);
     const d=String(event.$D);
     const y=String(event.$y);
-    setDob(d+"-"+m+"-"+y);   
+    setDob(y+"-"+m+"-"+d);   
   }
 
-  // const handleError = (error,input,message)=>{
-  //   setResError(prevState => ({...prevState,[input]:{'error':error,'message':message}}));
-  // }
+  const handleError = (error,input,message)=>{
+    setResError(prevState => ({...prevState,[input]:{'error':error,'message':message}}));
+  }
 
-  // function validation(){
-  //   let submitRecord=true;
+  function validation(){
+    let submitRecord=true;
 
-  //   if(restaurantId.trim().length===0)
-  //   {
-  //     handleError(true,'restaurantId',"please Input Restaurant Id")
-  //     submitRecord=false
-  //   }
-  //   if(noOfChairs.trim().length===0)
-  //   {
-  //     handleError(true,'noOfChairs',"please Input No of Chairs")
-  //     submitRecord=false
-  //   }
-  //   if(tableNo.trim().length===0)
-  //   {
-  //     handleError(true,'tableNo',"please Input Table No")
-  //     submitRecord=false
-  //   }
-  //   if(floor.trim().length===0)
-  //   {
-  //     handleError(true,'floor',"please Input floor")
-  //     submitRecord=false
-  //   }
+    if(restaurantId.trim().length===0)
+    {
+      handleError(true,'restaurantId',"please Input Restaurant Id")
+      submitRecord=false
+    }
+    if(waiterName.trim().length===0)
+    {
+      handleError(true,'waiterName',"please Input waiter Name")
+      submitRecord=false
+    }
+    if(!mobileNumber || !(/^[0-9]{10}$/).test(mobileNumber))
+    {
+      handleError(true,'mobileNumber',"Please Input 10 digit Mobile Number")
+       
+      submitRecord=false
+    }
+    if(!emailId || !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailId)))
+    {
+      handleError(true,'emailId',"Please Input Correct Email Address")
+       
+      submitRecord=false 
+    }
+    if(address.trim().length===0)
+    {
+      handleError(true,'address',"please input address")
 
-  //   return submitRecord
-  // }
+      submitRecord=false;
+    }
+    if(!picture.url)
+    {
+      handleError(true,'picture','Please Upload picture')
+
+      submitRecord=false
+    }
+
+    return submitRecord
+  }
 
   const handleSubmit=async()=>{
-    if(true){
+    if(validation()){
 
       const formData=new FormData();
       formData.append('restaurantid',restaurantId);
@@ -121,6 +135,9 @@ export default function WaiterInterface(){
         
         <Grid item xs={6}>
            <TextField
+           onFocus={()=>handleError(false,'restaurantId','')}
+           error={resError?.restaurantId?.error}
+           helperText={resError?.restaurantId?.message}
            onChange={(event)=>setRestaurantId(event.target.value)}
            label={"Restaurant Id"} fullWidth
             />
@@ -128,6 +145,9 @@ export default function WaiterInterface(){
 
           <Grid item xs={6}>
             <TextField 
+            onFocus={()=>handleError(false,'waiterName','')}
+            error={resError?.waiterName?.error}
+            helperText={resError?.waiterName?.message}
             onChange={(event)=>setWaiterName(event.target.value)}
             label={"Waiter Name"} fullWidth
             />
@@ -160,29 +180,40 @@ export default function WaiterInterface(){
 
         <Grid item xs={6}>
                       <TextField 
-                   
+                      onFocus={()=>handleError(false,'mobileNumber','')}
+                      error={resError?.mobileNumber?.error}
+                      helperText={resError?.mobileNumber?.message}
                       onChange={(event)=>setMobileNumber(event.target.value)} 
                       label="Mobile Number" fullWidth/>
                     </Grid>
 
                     <Grid item xs={6}>
                       <TextField
-                      
+                      onFocus={()=>handleError(false,'emailId','')}
+                      error={resError?.emailId?.error}
+                      helperText={resError?.emailId?.message}
                       label="Email Address" onChange={(event)=>setEmailId(event.target.value)} fullWidth/>
                     </Grid>
 
                     <Grid item xs={12}>
                       <TextField
-                      
+                      onFocus={()=>handleError(false,'address','')}
+                      error={resError?.address?.error}
+                      helperText={resError?.address?.message}
                       onChange={(event)=>setAddress(event.target.value)} label="Address" fullWidth/>
                     </Grid>
 
                     <Grid item xs={6}>
                       <Button fullWidth component="label" variant="contained" endIcon=    {<UploadIcon/>}>
-                          <input hidden onChange={handlePicture} 
+                          <input 
+                          onFocus={()=>handleError(false,'picture','')}
+                          hidden onChange={handlePicture} 
                           accept="image/*" multiple type="file"/>
                           Upload Picture
                       </Button>
+                      {
+                      resError?.picture?.error?<div style={{color:"#d32f2f",fontFamily:'sans-serif',fontSize:'12px',margin:"4px 14px 0px"}}>{resError?.picture?.message}</div>:<></>
+                      }
                     </Grid>
 
                     <Grid item xs={6} className={classes.center}>
