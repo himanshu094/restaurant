@@ -3,7 +3,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import {postData} from "../../services/FetchNodeServics";
+import {postData} from "../../services/FetchNodeServices";
 
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
@@ -42,8 +42,9 @@ export default function LoginPage() {
     const result=await postData('superadmin/checklogin',body);
     
     if(result.status)
-    {
-        navigate('/dashboard') 
+    {   
+        localStorage.setItem('SUPER',JSON.stringify(result.data));
+        navigate('/dashboard'); 
     }
     else
     {

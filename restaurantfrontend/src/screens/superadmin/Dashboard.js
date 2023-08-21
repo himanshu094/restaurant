@@ -15,10 +15,18 @@ import RestaurantInterface from "../restaurant/RestaurantInterface";
 import DisplayAllRestaurant from "../restaurant/DisplayAllRestaurant";
 import { Routes,Route } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { serverURL } from "../../services/FetchNodeServices";
 
 export default function Dashboard(props){
   const classes=useStyles();
   const navigate=useNavigate();
+  const sa=JSON.parse(localStorage.getItem('SUPER'));
+
+  const handleLogout=()=>{
+    localStorage.clear();
+    navigate('/loginpage');
+  }
+
   return(
     <Box sx={{ flexGrow: 1 }} >
         <AppBar position="sticky"> 
@@ -32,9 +40,10 @@ export default function Dashboard(props){
           <Grid item xs={2.2} >
             <Paper >
               <div className={classes.leftBarStyle}>
-                <Avatar src='' variant="circular" style={{width:80,height:80}}/> 
-                <div className={classes.nameStyle}>Peter Kumar</div>
-                <div className={classes.emailStyle}>peterkumar@gmail.com</div>
+                <Avatar src={`${serverURL}/images/${sa.picture}`} variant="circular" style={{width:80,height:80}}/> 
+                <div className={classes.nameStyle}>{
+                sa.superadminname}</div>
+                <div className={classes.emailStyle}>{sa.emailid}</div>
                 <div className={classes.phoneStyle}>+919301123085</div>
               </div>
               <div className={classes.menuStyle}>
@@ -56,9 +65,10 @@ export default function Dashboard(props){
                       <ListItemText primary={<span className={classes.menuItemStyle}>Restaurant List</span>} />
                     </ListItemButton>
                   </ListItem>
+
                   <Divider />
                   <ListItem disablePadding>
-                    <ListItemButton>
+                    <ListItemButton onClick={handleLogout}>
                       <ListItemIcon>
                         <DraftsIcon />
                       </ListItemIcon>

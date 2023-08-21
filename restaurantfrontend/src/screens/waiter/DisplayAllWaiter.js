@@ -5,15 +5,13 @@ import { useStyles } from "./DisplayAllWaiterCss";
 
 import {useState,useEffect} from 'react'
 import MaterialTable from "@material-table/core"
-import { getData, serverURL,postData } from '../../services/FetchNodeServics';
+import { getData, serverURL,postData } from '../../services/FetchNodeServices';
 import {Button ,Dialog,DialogActions,DialogContent} from "@mui/material";
 import Heading from '../../components/heading/Heading';
 
-
 import {Grid,TextField,Select,InputLabel,MenuItem,FormControl,FormHelperText,Avatar} from '@mui/material';
-import { UploadFile } from "@mui/icons-material";
 import Swal from 'sweetalert2';
-
+import { useNavigate } from "react-router-dom";
 
 import * as React from 'react';
 import dayjs, { Dayjs } from 'dayjs';
@@ -31,6 +29,7 @@ import UploadIcon from '@mui/icons-material/Upload';
 
 export default function DisplayAllWaiter()
 {  var classes = useStyles();
+    const navigate=useNavigate()
     const [listWaiter,setListWaiter]=useState([]);
     const [open,setOpen]=useState(false);
 
@@ -68,12 +67,12 @@ export default function DisplayAllWaiter()
     function validation(){
       let submitRecord=true;
   
-      if(restaurantId.trim().length===0)
+      if(!restaurantId)
       {
         handleError(true,'restaurantId',"please Input Restaurant Id")
         submitRecord=false
       }
-      if(waiterName.trim().length===0)
+      if(!waiterName)
       {
         handleError(true,'waiterName',"please Input waiter Name")
         submitRecord=false
@@ -90,7 +89,7 @@ export default function DisplayAllWaiter()
          
         submitRecord=false 
       }
-      if(address.trim().length===0)
+      if(!address)
       {
         handleError(true,'address',"please input address")
   
@@ -107,7 +106,7 @@ export default function DisplayAllWaiter()
     }
   
     const handleSubmit=async()=>{
-      if(true){
+      if(validation()){
   
         const body={'restaurantid':restaurantId,
                     'waiterid':waiterId,
@@ -387,7 +386,7 @@ export default function DisplayAllWaiter()
     function displayAll() {
         return (
           <MaterialTable
-            title="Table List"
+            title="Waiter List"
             columns={[
               { title: 'Restaurant Id', field: 'restaurantid' },
               { title: 'Waiter Name', field:'waitername'},
@@ -412,7 +411,7 @@ export default function DisplayAllWaiter()
                 icon: 'add',
                 tooltip: 'Add Table',
                 isFreeAction:true,
-                onClick: (event, rowData) => alert("You want to delete " + rowData.name)
+                onClick: (event, rowData) => navigate('/admindashboard/waiterinterface')
               }
             ]}
           />

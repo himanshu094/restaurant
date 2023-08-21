@@ -4,14 +4,16 @@
 import { useStyles } from "./DisplayAllCategoryCss";
 import {useState,useEffect} from 'react'
 import MaterialTable from "@material-table/core"
-import { serverURL,getData,postData } from "../../services/FetchNodeServics";
+import { serverURL,getData,postData } from "../../services/FetchNodeServices";
 import { Avatar,Grid,TextField,Button ,Dialog,DialogActions,DialogContent,FormControl,} from "@mui/material";
 import Heading from "../../components/heading/Heading";
 import UploadFile from '@mui/icons-material/UploadFile';
 import Swal from 'sweetalert2';
+import { useNavigate } from "react-router-dom";
 
 export default function DisplayAllCategory()
 {  const classes = useStyles();
+   const navigate = useNavigate()
 
   const [listCategory,setListCategory]=useState([]);
   const [open,setOpen]=useState(false)
@@ -32,14 +34,14 @@ export default function DisplayAllCategory()
   const validation=()=>
   {  let submitRecord=true
 
-     if(!restaurantId)
+     if(restaurantId.length===0)
      {
       handleError(true,'restaurantId',"Pls Input Restaurant Id"); 
       submitRecord=false;
      }
 
      //if(categoryName.trim().length==0)
-     if(!categoryName)
+     if(categoryName.length===0)
      {
       handleError(true,'categoryName',"Pls Input Category Name"); 
       submitRecord=false;
@@ -305,7 +307,7 @@ export default function DisplayAllCategory()
             icon: 'add',
             tooltip: 'Add Restaurant',
             isFreeAction: true,
-            onClick: (event, rowData) => alert("You want to delete " + rowData.name)
+            onClick: (event, rowData) => navigate('/admindashboard/categoryinterface')
           ,}
         ]}
       />

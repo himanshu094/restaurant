@@ -13,7 +13,7 @@ router.post('/checklogin',function(req,res,next){
     {
      if(result.length==1)
      { 
-       res.status(200).json({status:true,data:result,message:'Login Successful....'});
+       res.status(200).json({status:true,data:result[0],message:'Login Successful....'});
       }
       else
       {

@@ -7,7 +7,7 @@ import FormControl from '@mui/material/FormControl';
 import UploadIcon from '@mui/icons-material/Upload';
 
 import Swal from 'sweetalert2';
-import { serverURL,getData,postData} from "../../services/FetchNodeServics";
+import { serverURL,getData,postData} from "../../services/FetchNodeServices";
 import Heading from "../../components/heading/Heading";
 import { UploadFile } from "@mui/icons-material";
 
@@ -57,6 +57,25 @@ function RestaurantInterface(){
   const [fileLogo,setFileLogo]=useState({url:'',bytes:''})
   const [address,setAddress]=useState('');
   const [resError,setResError]=useState({});
+
+  const handleReset=()=>{
+    setRestaurantName('')
+    setOwnerName('')
+    setPhoneNumber('')
+    setMobileNumber('')
+    setEmailid('')
+    setAddress('')
+    setStateId('-Select State-')
+    setCityId('-Select City-')
+    setAddress('')
+    setFileLogo({ url: "", bytes: "" })
+    setUrl('')
+    setFssai('')
+    setGstNo('')
+    setGstType('-Select Gst Type-')
+    setFileShopAct({ url: "", bytes: "" })
+    setFileFssai({ url: "", bytes: "" })
+   }
 
    const generatePassword=()=>{
       const pwd=(Math.random()*8999)+1000;
@@ -213,7 +232,7 @@ function RestaurantInterface(){
                       onFocus={()=>handleError(false,'restaurantName','')}
                       error={resError?.restaurantName?.error}
                       helperText={resError?.restaurantName?.message}
-                      label="Restaurant Name" onChange={(event)=>setRestaurantName(event.target.value)} fullWidth
+                      label="Restaurant Name" value={restaurantName} onChange={(event)=>setRestaurantName(event.target.value)} fullWidth
                       />
                     </Grid>
 
@@ -223,11 +242,11 @@ function RestaurantInterface(){
                       error={resError?.ownerName?.error}
                       helperText={resError?.ownerName?.message}
                       onChange={(event)=>setOwnerName(event.target.value)} 
-                      label="Owner Name" fullWidth/>
+                      label="Owner Name" value={ownerName} fullWidth/>
                     </Grid>
 
                     <Grid item xs={4}>
-                      <TextField onChange={(event)=>setPhoneNumber(event.target.value)} label="Phone Number" fullWidth/>
+                      <TextField onChange={(event)=>setPhoneNumber(event.target.value)} label="Phone Number" value={phoneNumber} fullWidth/>
                     </Grid>
 
                     <Grid item xs={4}>
@@ -236,7 +255,7 @@ function RestaurantInterface(){
                       error={resError?.mobileNumber?.error}
                       helperText={resError?.mobileNumber?.message}
                       onChange={(event)=>setMobileNumber(event.target.value)} 
-                      label="Mobile Number" fullWidth/>
+                      label="Mobile Number" value={mobileNumber} fullWidth/>
                     </Grid>
 
                     <Grid item xs={4}>
@@ -244,7 +263,7 @@ function RestaurantInterface(){
                       onFocus={()=>handleError(false,'emailid','')}
                       error={resError?.emailid?.error}
                       helperText={resError?.emailid?.message}
-                      label="Email Address" onChange={(event)=>setEmailid(event.target.value)} fullWidth/>
+                      label="Email Address" value={emailid} onChange={(event)=>setEmailid(event.target.value)} fullWidth/>
                     </Grid>
 
                     <Grid item xs={12}>
@@ -252,7 +271,7 @@ function RestaurantInterface(){
                       onFocus={()=>handleError(false,'address','')}
                       error={resError?.address?.error}
                       helperText={resError?.address?.message}
-                      onChange={(event)=>setAddress(event.target.value)} label="Address" fullWidth/>
+                      onChange={(event)=>setAddress(event.target.value)} label="Address" value={address} fullWidth/>
                     </Grid>
 
                     <Grid item xs={4}>
@@ -287,15 +306,15 @@ function RestaurantInterface(){
                     </Grid>
 
                     <Grid item xs={4}>
-                       <TextField onChange={(event)=>setUrl(event.target.value)} label="URL" fullWidth/>
+                       <TextField onChange={(event)=>setUrl(event.target.value)} label="URL" value={url}fullWidth/>
                     </Grid>
 
                     <Grid item xs={4}>
-                      <TextField onChange={(event)=>setFssai(event.target.value)} label="Fssai Number" fullWidth/>
+                      <TextField onChange={(event)=>setFssai(event.target.value)} label="Fssai Number" value={fssai} fullWidth/>
                     </Grid>
 
                     <Grid item xs={4}>
-                      <TextField onChange={(event)=>setGstNo(event.target.value)} label="GST Number" fullWidth/>
+                      <TextField onChange={(event)=>setGstNo(event.target.value)} label="GST Number" value={gstNo} fullWidth/>
                     </Grid>
 
                     <Grid item xs={4}>
@@ -370,7 +389,7 @@ function RestaurantInterface(){
                         <Button onClick={handleSubmit} variant="contained" fullWidth>Submit</Button> 
                       </Grid>
                       <Grid item xs={6}>
-                        <Button variant="contained" fullWidth>Reset</Button>
+                        <Button variant="contained" fullWidth onClick={handleReset}>Reset</Button>
                       </Grid>
                     
 

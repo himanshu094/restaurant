@@ -3,14 +3,14 @@ import { makeStyles } from "@mui/styles";
 export const useStyles = makeStyles({
   root: {
     width:"auto",
-    height:"120vh",
+    height:"100%",
     background:"#dfe4ea",
     display:"flex",
     alignItems:"center",
     justifyContent:"center"
   },
   box:{
-    width:"80%",
+    width:"84%",
     height:"auto",
     borderRadius:10,
     background:"#fff",

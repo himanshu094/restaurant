@@ -9,11 +9,12 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 
 import {useState,useEffect} from 'react';
-import { getData,postData} from "../../services/FetchNodeServics";
+import { getData,postData} from "../../services/FetchNodeServices";
 import Swal from 'sweetalert2';
 
 export default function FoodItemInterface(){
   const classes = useStyles();
+  const admin=JSON.parse(localStorage.getItem('ADMIN'));
 
    ///? useStates///////////////////////////
    const [restaurantId,setRestaurantId]=useState("");
@@ -33,7 +34,7 @@ export default function FoodItemInterface(){
 
   function validation(){
     let submitRecord=true;
-    if(restaurantId.trim().length===0)
+    if(restaurantId.length===0)
     {
       handleError(true,'restaurantId',"please Input Restaurant Id")
       submitRecord=false
@@ -82,7 +83,8 @@ export default function FoodItemInterface(){
   }
 
   useEffect(function(){
-      fetchAllCategory()  
+      fetchAllCategory();
+      setRestaurantId(admin.restaurantid)  
   },[]);
 
   const fillCategory=()=>{
@@ -136,16 +138,12 @@ export default function FoodItemInterface(){
       <Grid container spacing={2}>
 
         <Grid item xs={12}>
-          <Heading title={"Register Food Item"} />
+          <Heading title={"Register Food Item"} myroute={"/admindashboard/displayallfooditem"}/>
         </Grid>
         
         <Grid item xs={6}>
-           <TextField 
-           onFocus={()=>handleError(false,'restaurantId','')}
-           error={resError?.restaurantId?.error}
-           helperText={resError?.restaurantId?.message}
-           label={"Restaurant Id"} fullWidth 
-           onChange={(event)=>setRestaurantId(event.target.value)}/>
+           <TextField  fullWidth disabled 
+           value={restaurantId}/>
         </Grid>
         <Grid item xs={6}>
            <FormControl fullWidth>

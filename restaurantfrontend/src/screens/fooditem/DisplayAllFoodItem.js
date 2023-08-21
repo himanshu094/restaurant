@@ -3,7 +3,7 @@
 
 import { useStyles } from "./DisplayAllFoodItemCss";
 import {useState,useEffect} from 'react';
-import { serverURL,getData,postData } from "../../services/FetchNodeServics";
+import { serverURL,getData,postData } from "../../services/FetchNodeServices";
 import MaterialTable from "@material-table/core"
 import { Avatar,Grid,TextField,Button ,Dialog,DialogActions,DialogContent,FormControl,MenuItem,InputLabel,Select} from "@mui/material";
 import Heading from "../../components/heading/Heading";
@@ -15,9 +15,10 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import Swal from 'sweetalert2';
+import { useNavigate } from "react-router-dom";
 
 export default function DisplayAllFoodItem()
-{
+{   const navigate=useNavigate();
     const classes = useStyles();
     const [listFoodItem,setListFoodItem]=useState([]);
     const [open,setOpen]=useState(false);
@@ -43,18 +44,42 @@ export default function DisplayAllFoodItem()
 
   function validation(){
     let submitRecord=true;
-    if(restaurantId.trim().length===0)
+    if(!restaurantId)
     {
       handleError(true,'restaurantId',"please Input Restaurant Id")
       submitRecord=false
     }
     
-    // if(!categoryId)
-    // {
-    //   handleError(true,'categoryId','please select category')
+    if(!categoryId)
+    {
+      handleError(true,'categoryId','please select category')
 
-    //   submitRecord=false
-    // }
+      submitRecord=false
+    }
+    if(!foodItemName)
+    {
+      handleError(true,'foodItemName','please Input Food Item Name')
+
+      submitRecord=false
+    }
+    if(!ingredients)
+    {
+      handleError(true,'ingredients','please Input ingredients')
+
+      submitRecord=false
+    }
+    if(!price)
+    {
+      handleError(true,'price','please Input price')
+
+      submitRecord=false
+    }
+    if(!offerPrice)
+    {
+      handleError(true,'offerPrice','please Input offerPrice')
+
+      submitRecord=false
+    }
     // if(!iconData.url)
     // {
     //   handleError(true,'fileFssai','Please Upload Fssai')
@@ -86,7 +111,7 @@ export default function DisplayAllFoodItem()
   }
 
   const handleSubmit=async()=>{
-    if(true){
+    if(validation()){
       const body={'restaurantid':restaurantId,'categoryid':categoryId,
       'fooditemname':foodItemName,
       'foodtype':foodType,
@@ -178,7 +203,9 @@ export default function DisplayAllFoodItem()
     const handleEdit=(rowData)=>{
       setRestaurantId(rowData.restaurantid);
       setIconData({url:`${serverURL}/images/${rowData.icon}`,bytes:''})
+
       setCategoryId(rowData.categoryid);
+
       setFoodItemName(rowData.fooditemname);
       setFoodType(rowData.foodtype);
       setIngredients(rowData.ingredients);
@@ -211,12 +238,13 @@ export default function DisplayAllFoodItem()
             </Grid>
             
             <Grid item xs={6}>
-               <TextField value={restaurantId}
+               <TextField 
                onFocus={()=>handleError(false,'restaurantId','')}
                error={resError?.restaurantId?.error}
                helperText={resError?.restaurantId?.message}
                label={"Restaurant Id"} fullWidth 
-               onChange={(event)=>setRestaurantId(event.target.value)}/>
+               onChange={(event)=>setRestaurantId(event.target.value)}
+               value={restaurantId}/>
             </Grid>
             <Grid item xs={6}>
                <FormControl fullWidth>
@@ -229,7 +257,11 @@ export default function DisplayAllFoodItem()
             </Grid>
     
             <Grid item xs={6}>
-               <TextField label={"Food Item Name"} fullWidth
+               <TextField 
+               onFocus={()=>handleError(false,'foodItemName','')}
+               error={resError?.foodItemName?.error}
+               helperText={resError?.foodItemName?.message}
+               label={"Food Item Name"} fullWidth
                onChange={(event)=>setFoodItemName(event.target.value)}
                value={foodItemName}/>
             </Grid>
@@ -248,16 +280,28 @@ export default function DisplayAllFoodItem()
     
             
             <Grid item xs={12}>
-               <TextField label={"Ingredients"} fullWidth value={ingredients}
+               <TextField 
+                 onFocus={()=>handleError(false,'ingredients','')}
+                 error={resError?.ingredients?.error}
+                 helperText={resError?.ingredients?.message}
+                 label={"Ingredients"} fullWidth value={ingredients}
                  onChange={(event)=>setIngredients(event.target.value)}/>
             </Grid>
     
             <Grid item xs={6}>
-               <TextField label={"Price"} fullWidth value={price}
+               <TextField 
+                 onFocus={()=>handleError(false,'price','')}
+                 error={resError?.price?.error}
+                 helperText={resError?.price?.message}
+                 label={"Price"} fullWidth value={price}
                  onChange={(event)=>setPrice(event.target.value)}/>
             </Grid>
             <Grid item xs={6}>
-               <TextField label={"Offer Price"} fullWidth value={offerPrice}
+               <TextField 
+                 onFocus={()=>handleError(false,'offerPrice','')}
+                 error={resError?.offerPrice?.error}
+                 helperText={resError?.offerPrice?.message}
+                 label={"Offer Price"} fullWidth value={offerPrice}
                  onChange={(event)=>setOfferPrice(event.target.value)}/>
             </Grid>
     
@@ -360,7 +404,7 @@ export default function DisplayAllFoodItem()
                 icon: 'add',
                 tooltip: 'Add Food Item',
                 isFreeAction: true,
-                onClick: (event, rowData) => alert("You want to delete " + rowData.name)
+                onClick: (event, rowData) => navigate('/admindashboard/fooditeminterface')
               ,}
             ]}
           />

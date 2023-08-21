@@ -1,14 +1,11 @@
 import { useStyles } from "./WaiterInterfaceCss";
 import {Grid,TextField,Button,FormControl,Avatar} from '@mui/material';
 import Heading from "../../components/heading/Heading";
-import { UploadFile } from "@mui/icons-material";
 
 import {useState,useEffect} from 'react';
-import { getData,postData} from "../../services/FetchNodeServics";
+import { getData,postData} from "../../services/FetchNodeServices";
 import Swal from 'sweetalert2';
 
-import * as React from 'react';
-import dayjs, { Dayjs } from 'dayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -23,6 +20,7 @@ import UploadIcon from '@mui/icons-material/Upload';
 
 export default function WaiterInterface(){
   const classes = useStyles();
+  const admin=JSON.parse(localStorage.getItem('ADMIN'));
 
   const [restaurantId,setRestaurantId]=useState("");
   const [waiterName,setWaiterName]=useState("");
@@ -35,6 +33,10 @@ export default function WaiterInterface(){
 
   const [resError,setResError]=useState({});
   
+  useEffect(function(){
+    setRestaurantId(admin.restaurantid) 
+  },[])
+
   const handlePicture=(event)=>{
     setPicture({url:URL.createObjectURL(event.target.files[0]),bytes:event.target.files[0]})
   }
@@ -53,7 +55,7 @@ export default function WaiterInterface(){
   function validation(){
     let submitRecord=true;
 
-    if(restaurantId.trim().length===0)
+    if(restaurantId.length===0)
     {
       handleError(true,'restaurantId',"please Input Restaurant Id")
       submitRecord=false
@@ -130,16 +132,13 @@ export default function WaiterInterface(){
       <Grid container spacing={2}>
 
         <Grid item xs={12}>
-          <Heading title={"Register Waiter"} />
+          <Heading title={"Register Waiter"} myroute={'/admindashboard/displayallwaiter'}/>
         </Grid>
         
         <Grid item xs={6}>
            <TextField
-           onFocus={()=>handleError(false,'restaurantId','')}
-           error={resError?.restaurantId?.error}
-           helperText={resError?.restaurantId?.message}
-           onChange={(event)=>setRestaurantId(event.target.value)}
-           label={"Restaurant Id"} fullWidth
+           value={restaurantId} disabled
+            fullWidth
             />
         </Grid>
 

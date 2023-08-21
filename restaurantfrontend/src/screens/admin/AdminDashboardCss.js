@@ -29,6 +29,7 @@ export const useStyles = makeStyles({
     justifyContent:"center",
     alignItems:"center",
     margin:10,
+    paddingBlock:20
     
   },
   nameStyle:{

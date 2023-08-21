@@ -3,7 +3,7 @@
 
 import {useState,useEffect} from 'react'
 import MaterialTable from "@material-table/core"
-import { getData, serverURL,postData } from '../../services/FetchNodeServics';
+import { getData, serverURL,postData } from '../../services/FetchNodeServices';
 import {Button ,Dialog,DialogActions,DialogContent} from "@mui/material";
 import Heading from '../../components/heading/Heading';
 import { useStyles } from "./DisplayAllWaiterTableCss";
@@ -18,9 +18,11 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { useNavigate } from 'react-router-dom';
 
 export default function DisplayAllWaiterTable()
 {  var classes = useStyles();
+   const navigate=useNavigate()
     const [listWaiterTable,setListWaiterTable]=useState([]);
     const [open,setOpen]=useState(false);
     const [waiterTableId,setWaiterTableId]=useState("");
@@ -76,7 +78,7 @@ export default function DisplayAllWaiterTable()
        const body={
          'restaurantid':restaurantId,
          'waiterid':waiterId,
-         'tableid':tableId,
+         'tablenoid':tableId,
          'currentdate':currentDate,
          'waitertableid':waiterTableId
        }
@@ -122,7 +124,7 @@ export default function DisplayAllWaiterTable()
     const handleEdit=(rowData)=>{
       setRestaurantId(rowData.restaurantid);
       setWaiterId(rowData.waiterid);
-      setTableId(rowData.tableid);
+      setTableId(rowData.tablenoid);
       setCurrentDate(rowData.currentdate);
       setWaiterTableId(rowData.waitertableid);
       setOpen(true);
@@ -184,6 +186,11 @@ export default function DisplayAllWaiterTable()
                           <DatePicker
                             label="Current Date"
                             format="DD-MM-YYYY"
+                            slotProps={{
+                              textField: {
+                                helperText: 'YYYY/MM/DD',
+                              },
+                            }}
                             onChange={handleDate}
                             defaultValue={dayjs(currentDate)}     
                           />
@@ -269,7 +276,7 @@ export default function DisplayAllWaiterTable()
                 icon: 'add',
                 tooltip: 'Add Table',
                 isFreeAction:true,
-                onClick: (event, rowData) => alert("You want to Add WaiterTable" )
+                onClick: (event, rowData) => navigate('/admindashboard/waitertableinterface')
               }
             ]}
           />

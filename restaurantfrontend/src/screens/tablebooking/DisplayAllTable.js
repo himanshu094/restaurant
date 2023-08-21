@@ -4,9 +4,10 @@
 import {useState,useEffect} from 'react'
 import MaterialTable from "@material-table/core"
 import { useStyles } from './DisplayAllTableCss';
-import { getData, serverURL,postData } from '../../services/FetchNodeServics';
+import { getData, serverURL,postData } from '../../services/FetchNodeServices';
 import {Button ,Dialog,DialogActions,DialogContent} from "@mui/material";
 import Heading from '../../components/heading/Heading';
+import { useNavigate } from 'react-router-dom';
 
 
 import {Grid,TextField,Select,InputLabel,MenuItem,FormControl,FormHelperText} from '@mui/material';
@@ -14,9 +15,10 @@ import { UploadFile } from "@mui/icons-material";
 import Swal from 'sweetalert2';
 
 
-
 export default function DisplayAllTable()
-{  var classes = useStyles();
+{   var classes = useStyles();
+    const navigate=useNavigate()
+
     const [listTable,setListTable]=useState([]);
     const [open,setOpen]=useState(false);
 
@@ -39,19 +41,19 @@ export default function DisplayAllTable()
     //  alert(floor)
     //  alert(tableNo)
     //  alert(noOfChairs)   
-    if(restaurantId.trim().length===0)
+    if(!restaurantId)
     //if(!restaurantId)
     {
       handleError(true,'restaurantId',"please Input Restaurant Id")
       submitRecord=false
     }
-    if(noOfChairs.trim().length===0)
+    if(!noOfChairs)
     //if(!noOfChairs)
     {
       handleError(true,'noOfChairs',"please Input No of Chairs")
       submitRecord=false
     }
-    if(tableNo.trim().length===0)
+    if(!tableNo)
     //if(!tableNo)
     {
       handleError(true,'tableNo',"please Input Table No")
@@ -69,7 +71,7 @@ export default function DisplayAllTable()
 
   const handleSubmit=async()=>{
     console.log(restaurantId,floor,tableNo,noOfChairs);
-    if(true){
+    if(validation()){
 
       const body={'restaurantid':restaurantId,
                   'floor':floor,
@@ -265,7 +267,7 @@ export default function DisplayAllTable()
                 icon: 'add',
                 tooltip: 'Add Table',
                 isFreeAction:true,
-                onClick: (event, rowData) => alert("You want to delete " + rowData.name)
+                onClick: (event, rowData) => navigate('/admindashboard/tablebookinginterface')
               }
             ]}
           />

@@ -3,7 +3,7 @@ import { makeStyles } from "@mui/styles";
 export const useStyles = makeStyles({
   rootDisplay: {
     width:"auto",
-    height:"auto",
+    height:"100%",
     background:"#dfe4ea",
     display:"flex",
     alignItems:"center",

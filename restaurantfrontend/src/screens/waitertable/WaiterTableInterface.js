@@ -1,21 +1,21 @@
 import { useStyles } from "./WaiterTableInterfaceCss";
 import {Grid,TextField,Button,Select,InputLabel,MenuItem,FormControl,Avatar,FormHelperText} from '@mui/material';
 import Heading from "../../components/heading/Heading";
-import { UploadFile } from "@mui/icons-material";
 
 import {useState,useEffect} from 'react';
-import { getData,postData} from "../../services/FetchNodeServics";
+import { getData,postData} from "../../services/FetchNodeServices";
 import Swal from 'sweetalert2';
 
-import * as React from 'react';
-import dayjs, { Dayjs } from 'dayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
+
+
 export default function WaiterTableInterface(){
   const classes = useStyles();
+  const admin=JSON.parse(localStorage.getItem('ADMIN'));
 
    ///? useStates///////////////////////////
    const [restaurantId,setRestaurantId]=useState("");
@@ -42,7 +42,8 @@ export default function WaiterTableInterface(){
 
   useEffect(function(){
       fetchAllWaiter();
-      fetchAllTable();  
+      fetchAllTable(); 
+      setRestaurantId(admin.restaurantid) 
   },[]);
 
   const fillWaiter=()=>{
@@ -68,7 +69,7 @@ export default function WaiterTableInterface(){
       const body={
         'restaurantid':restaurantId,
         'waiterid':waiterId,
-        'tableid':tableId,
+        'tablenoid':tableId,
         'currentdate':currentDate
       }
 
@@ -100,14 +101,13 @@ export default function WaiterTableInterface(){
       <Grid container spacing={2}>
 
         <Grid item xs={12}>
-          <Heading title={"Register Food Item"} />
+          <Heading title={"Register Waiter table"} myroute={'/admindashboard/displayallwaitertable'}/>
         </Grid>
         
         <Grid item xs={6}>
-           <TextField 
-         
-           label={"Restaurant Id"} fullWidth 
-           onChange={(event)=>setRestaurantId(event.target.value)}/>
+           <TextField disabled
+           value={restaurantId} fullWidth />
+           
         </Grid>
 
         <Grid item xs={6}>
@@ -144,6 +144,11 @@ export default function WaiterTableInterface(){
                       <DatePicker
                         label="Current Date"
                         format="DD-MM-YYYY"
+                        slotProps={{
+                          textField: {
+                            helperText: 'YYYY/MM/DD',
+                          },
+                        }}
                         onChange={handleDate}     
                       />
                  </DemoContainer>

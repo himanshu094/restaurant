@@ -11,7 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import UploadIcon from '@mui/icons-material/Upload';
 import Swal from 'sweetalert2';
-import { serverURL,getData,postData} from "../../services/FetchNodeServics";
+import { serverURL,getData,postData} from "../../services/FetchNodeServices";
 import Heading from "../../components/heading/Heading";
 import { UploadFile } from "@mui/icons-material";
 
