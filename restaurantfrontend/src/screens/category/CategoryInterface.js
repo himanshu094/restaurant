@@ -28,7 +28,7 @@ export default function CategoryInterface()
   const validation=()=>
   {  let submitRecord=true
 
-     if(restaurantId.trim().length==0)
+     if(restaurantId.length==0)
      {
       handleError(true,'restaurantId',"Pls Input Restaurant Id"); 
       submitRecord=false;

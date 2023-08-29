@@ -21,6 +21,8 @@ export default function WaiterTableInterface(){
    const [restaurantId,setRestaurantId]=useState("");
    const [waiter,setWaiter]=useState([]);
    const [waiterId,setWaiterId]=useState("");
+   const [floor,setFloor]=useState([])
+   const [selectedFloor,setSelectedFloor]=useState("")
    const [table,setTable]=useState([]);
    const [tableId,setTableId]=useState("");
    const [currentDate,setCurrentDate]=useState("");
@@ -36,13 +38,24 @@ export default function WaiterTableInterface(){
 
   //? Dropdown Filling/////////////////////////////////
   const fetchAllWaiter=async()=>{
-     const result=await getData('waitertable/fetch_all_waiter');
+     const result=await postData('waiter/fetch_all_waiter',{restaurantid:admin.restaurantid});
      setWaiter(result.data);
   }
+
+  const fetchAllTable=async(clickedfloor)=>{
+    const result=await postData('tablebooking/fetch_all_table_by_floor',{restaurantid:admin.restaurantid,floor:clickedfloor});
+    setTable(result.data);
+ }
+
+  const fetchAllFloor=async()=>{
+    const result=await postData('tablebooking/fetch_all_floor',{restaurantid:admin.restaurantid});
+    setFloor(result.data)
+  } 
 
   useEffect(function(){
       fetchAllWaiter();
       fetchAllTable(); 
+      fetchAllFloor();
       setRestaurantId(admin.restaurantid) 
   },[]);
 
@@ -52,15 +65,16 @@ export default function WaiterTableInterface(){
     });
   }
 
-  const fetchAllTable=async()=>{
-    const result=await getData('waitertable/fetch_all_table');
-    setTable(result.data);
- }
-
  const fillTable=()=>{
    return table.map((item)=>{
      return <MenuItem value={item.tableid}>{item.tableno}</MenuItem>
    });
+ }
+
+ const fillFloor=()=>{
+  return floor.map((item)=>{
+    return <MenuItem value={item.floor}>{item.floor}</MenuItem>
+  }) 
  }
   //?.///////////////////////////////////////////////// ////////////////////
 
@@ -69,7 +83,7 @@ export default function WaiterTableInterface(){
       const body={
         'restaurantid':restaurantId,
         'waiterid':waiterId,
-        'tablenoid':tableId,
+        'tableid':tableId,
         'currentdate':currentDate
       }
 
@@ -92,7 +106,12 @@ export default function WaiterTableInterface(){
         })
       }
     }    
-}
+  }
+
+  const handleFloorChange=(event)=>{
+    setSelectedFloor(event.target.value);
+    fetchAllTable(event.target.value);
+  }
 
 
 
@@ -122,6 +141,19 @@ export default function WaiterTableInterface(){
             </Select>
                
            </FormControl>
+        </Grid>
+
+        <Grid item xs={6}>
+          <FormControl fullWidth>
+            <InputLabel>Floor No</InputLabel>
+            <Select label={"Floor no"} 
+             
+               onChange={(event)=>handleFloorChange(event)} 
+              value={selectedFloor}>
+              <MenuItem>-Select Floor No-</MenuItem>
+              {fillFloor()}
+            </Select>
+          </FormControl>
         </Grid>
 
         <Grid item xs={6}>
@@ -155,7 +187,7 @@ export default function WaiterTableInterface(){
              </LocalizationProvider>
           </Grid>
         
-       
+          <Grid item xs={6}></Grid>
 
         <Grid item xs={6}>
           <Button  variant="contained" onClick={handleSubmit} fullWidth>Submit</Button> 

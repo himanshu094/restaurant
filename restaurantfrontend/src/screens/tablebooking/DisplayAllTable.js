@@ -16,8 +16,9 @@ import Swal from 'sweetalert2';
 
 
 export default function DisplayAllTable()
-{   var classes = useStyles();
-    const navigate=useNavigate()
+{   const classes = useStyles();
+    const navigate=useNavigate();
+    const admin=JSON.parse(localStorage.getItem('ADMIN'));
 
     const [listTable,setListTable]=useState([]);
     const [open,setOpen]=useState(false);
@@ -110,7 +111,7 @@ export default function DisplayAllTable()
     //?.////////////////////////////////////////////////////////////////////////////////////
 
     const fetchAllTable=async()=>{
-     var result=await getData('tablebooking/fetch_all_table');
+     var result=await postData('tablebooking/fetch_all_table',{restaurantid:admin.restaurantid});
      setListTable(result.data);
 
     }
@@ -157,6 +158,7 @@ export default function DisplayAllTable()
                       error={resError?.floor?.error}
                       onChange={(event)=>setFloor(event.target.value)} value={floor}>
                       <MenuItem>-Select Floor-</MenuItem>
+                      <MenuItem value="Garden Area">Garden Area</MenuItem>
                       <MenuItem value="Roof Top">Roof Top</MenuItem>
                       <MenuItem value="Floor 1">Floor 1</MenuItem>
                       <MenuItem value="Floor 2">Floor 2</MenuItem>

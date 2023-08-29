@@ -21,8 +21,40 @@ router.post('/table_submit', upload.any(),function(req, res, next) {
   })
   });
 
-  router.get('/fetch_all_table',function(req,res){
-    pool.query('select * from tablebooking',function(error,result){
+  router.post('/fetch_all_floor',function(req,res){
+    pool.query('select floor from tablebooking where restaurantid=? group by floor order by floor',[req.body.restaurantid],function(error,result){
+        if(error)
+        {
+            console.log(error)
+            res.status(200).json({status:false,message:'Database Error',data:[]})
+        
+        }
+        else
+        {  console.log(result)
+            res.status(200).json({status:true,data:result,message:'Fooditems Get Successfully'})
+        }
+    }) 
+    })
+
+
+    router.post('/fetch_all_table_by_floor',function(req,res){
+        pool.query('select * from tablebooking where restaurantid=? and floor=? order by tableno',[req.body.restaurantid,req.body.floor],function(error,result){
+            if(error)
+            {
+                console.log(error)
+                res.status(200).json({status:false,message:'Database Error',data:[]})
+            
+            }
+            else
+            {  console.log(result)
+                res.status(200).json({status:true,data:result,message:'Fooditems Get Successfully'})
+            }
+        }) 
+        })
+
+
+  router.post('/fetch_all_table',function(req,res){
+    pool.query('select * from tablebooking where restaurantid=?',[req.body.restaurantid],function(error,result){
         if(error)
         {
             console.log(error)

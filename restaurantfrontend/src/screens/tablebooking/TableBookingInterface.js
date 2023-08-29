@@ -104,6 +104,7 @@ export default function TableBookingInterface(){
                   error={resError?.floor?.error}
                   onChange={(event)=>setFloor(event.target.value)} value={floor}>
                   <MenuItem>-Select Floor-</MenuItem>
+                  <MenuItem value="Garden Area">Garden Area</MenuItem>
                   <MenuItem value="Roof Top">Roof Top</MenuItem>
                   <MenuItem value="Floor 1">Floor 1</MenuItem>
                   <MenuItem value="Floor 2">Floor 2</MenuItem>

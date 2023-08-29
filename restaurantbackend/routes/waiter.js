@@ -20,8 +20,8 @@ router.post('/waiter_submit', upload.any(),function(req, res, next) {
   })
   });
 
-  router.get('/fetch_all_waiter',function(req,res){
-    pool.query('select * from waiters',function(error,result){
+  router.post('/fetch_all_waiter',function(req,res){
+    pool.query('select * from waiters where restaurantid=?',[req.body.restaurantid],function(error,result){
         if(error)
         {
             console.log(error)

@@ -22,7 +22,9 @@ import { useNavigate } from 'react-router-dom';
 
 export default function DisplayAllWaiterTable()
 {  var classes = useStyles();
-   const navigate=useNavigate()
+   const navigate=useNavigate();
+   const admin=JSON.parse(localStorage.getItem('ADMIN'));
+
     const [listWaiterTable,setListWaiterTable]=useState([]);
     const [open,setOpen]=useState(false);
     const [waiterTableId,setWaiterTableId]=useState("");
@@ -46,7 +48,7 @@ export default function DisplayAllWaiterTable()
  
    //? Dropdown Filling/////////////////////////////////
    const fetchAllWaiter=async()=>{
-      const result=await getData('waitertable/fetch_all_waiter');
+      const result=await postData('waiter/fetch_all_waiter',{restaurantid:admin.restaurantid});
       setWaiter(result.data);
    }
  
@@ -62,7 +64,7 @@ export default function DisplayAllWaiterTable()
    }
  
    const fetchAllTable=async()=>{
-     const result=await getData('waitertable/fetch_all_table');
+     const result=await postData('tablebooking/fetch_all_table',{restaurantid:admin.restaurantid});
      setTable(result.data);
   }
  
@@ -78,7 +80,7 @@ export default function DisplayAllWaiterTable()
        const body={
          'restaurantid':restaurantId,
          'waiterid':waiterId,
-         'tablenoid':tableId,
+         'tableid':tableId,
          'currentdate':currentDate,
          'waitertableid':waiterTableId
        }
@@ -124,7 +126,7 @@ export default function DisplayAllWaiterTable()
     const handleEdit=(rowData)=>{
       setRestaurantId(rowData.restaurantid);
       setWaiterId(rowData.waiterid);
-      setTableId(rowData.tablenoid);
+      setTableId(rowData.tableid);
       setCurrentDate(rowData.currentdate);
       setWaiterTableId(rowData.waitertableid);
       setOpen(true);
@@ -256,7 +258,7 @@ export default function DisplayAllWaiterTable()
             columns={[
               { title: 'RestaurantId', field: 'restaurantid' },
               { title: 'Waiter Name', field:'waitername'},
-              { title: 'Table No', field:'tableno'},
+              { title: 'Floor, Table No', render:(rowData)=><><div>Table Id: {rowData.tableid}</div><div>{rowData.floor}, Table {rowData.tableno}</div></>},
               { title: 'CurrentDate', field:'currentdate'}
         
             ]}

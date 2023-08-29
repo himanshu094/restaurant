@@ -29,7 +29,9 @@ import UploadIcon from '@mui/icons-material/Upload';
 
 export default function DisplayAllWaiter()
 {  var classes = useStyles();
-    const navigate=useNavigate()
+    const navigate=useNavigate();
+    const admin=JSON.parse(localStorage.getItem('ADMIN'));
+
     const [listWaiter,setListWaiter]=useState([]);
     const [open,setOpen]=useState(false);
 
@@ -198,7 +200,7 @@ export default function DisplayAllWaiter()
 
 
     const fetchAllWaiter=async()=>{
-     var result=await getData('waiter/fetch_all_waiter');
+     var result=await postData('waiter/fetch_all_waiter',{restaurantid:admin.restaurantid});
      setListWaiter(result.data);
 
     }

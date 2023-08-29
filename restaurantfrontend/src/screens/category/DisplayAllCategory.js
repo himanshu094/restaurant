@@ -13,7 +13,8 @@ import { useNavigate } from "react-router-dom";
 
 export default function DisplayAllCategory()
 {  const classes = useStyles();
-   const navigate = useNavigate()
+   const admin=JSON.parse(localStorage.getItem('ADMIN'));
+   const navigate = useNavigate();
 
   const [listCategory,setListCategory]=useState([]);
   const [open,setOpen]=useState(false)
@@ -153,7 +154,7 @@ export default function DisplayAllCategory()
   }
 
   const fetchAllCategory=async()=>{
-   var result=await getData('category/fetch_all_category')
+   var result=await postData('category/fetch_all_category',{restaurantid:admin.restaurantid})
    setListCategory(result.data)
 
   };

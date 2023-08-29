@@ -20,6 +20,8 @@ import { useNavigate } from "react-router-dom";
 export default function DisplayAllFoodItem()
 {   const navigate=useNavigate();
     const classes = useStyles();
+    const admin=JSON.parse(localStorage.getItem('ADMIN'));
+
     const [listFoodItem,setListFoodItem]=useState([]);
     const [open,setOpen]=useState(false);
     
@@ -90,7 +92,7 @@ export default function DisplayAllFoodItem()
   }
 
   const fetchAllCategory=async()=>{
-     const result=await getData('fooditem/fetch_all_category');
+    const result=await postData('category/fetch_all_category',{restaurantid:admin.restaurantid});
      setCategory(result.data);
   }
 
@@ -218,7 +220,7 @@ export default function DisplayAllFoodItem()
     }
 
     const fetchAllFoodItem=async()=>{
-      var result=await getData('fooditem/fetch_all_fooditem')
+      var result=await postData('fooditem/fetch_all_fooditem',{restaurantid:admin.restaurantid})
       setListFoodItem(result.data);
      }
 

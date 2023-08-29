@@ -78,7 +78,7 @@ export default function FoodItemInterface(){
   }
 
   const fetchAllCategory=async()=>{
-     const result=await getData('fooditem/fetch_all_category');
+     const result=await postData('category/fetch_all_category',{restaurantid:admin.restaurantid});
      setCategory(result.data);
   }
 
@@ -149,7 +149,7 @@ export default function FoodItemInterface(){
            <FormControl fullWidth>
             <InputLabel>Category Name</InputLabel>
             <Select label={"Category Name"} 
-              onFocus={()=>handleError(false,'restaurantId','')}
+              onFocus={()=>handleError(false,'categoryId','')}
               error={resError?.categoryId?.error}
               onChange={(event)=>setCategoryId(event.target.value)} 
               value={categoryId}>
