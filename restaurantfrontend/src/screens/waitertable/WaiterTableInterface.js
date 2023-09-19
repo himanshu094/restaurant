@@ -17,18 +17,18 @@ export default function WaiterTableInterface(){
   const classes = useStyles();
   const admin=JSON.parse(localStorage.getItem('ADMIN'));
 
-   ///? useStates///////////////////////////
-   const [restaurantId,setRestaurantId]=useState("");
-   const [waiter,setWaiter]=useState([]);
-   const [waiterId,setWaiterId]=useState("");
-   const [floor,setFloor]=useState([])
-   const [selectedFloor,setSelectedFloor]=useState("")
-   const [table,setTable]=useState([]);
-   const [tableId,setTableId]=useState("");
-   const [currentDate,setCurrentDate]=useState("");
-   const [resError,setResError]=useState({});
+  ///? useStates///////////////////////////
+  const [restaurantId,setRestaurantId]=useState("");
+  const [waiter,setWaiter]=useState([]);
+  const [waiterId,setWaiterId]=useState("");
+  const [floor,setFloor]=useState([])
+  const [selectedFloor,setSelectedFloor]=useState("")
+  const [table,setTable]=useState([]);
+  const [tableId,setTableId]=useState("");
+  const [currentDate,setCurrentDate]=useState("");
+  const [resError,setResError]=useState({});
 
-   const handleDate=(event)=>{
+  const handleDate=(event)=>{
     const m=String(Number(event.$M)+1);
     const d=String(event.$D);
     const y=String(event.$y);

@@ -1,9 +1,10 @@
 import { useEffect,useState } from "react";
 import { TextField,Grid, MenuItem,FormControl,InputLabel,Select } from "@mui/material";
 import { useStyles } from "./FoodBookingCss";
-import { getData,postData } from "../../services/FetchNodeServices";
+import { getData,postData,serverURL } from "../../services/FetchNodeServices";
 import TableComponent from "../../components/tableComponent/TableComponent";
 import CategoryComponent from "../../components/categoryComponent/CategoryComponent";
+import TableCart from "../../components/tableCart/TableCart";
 
 export default function FoodBooking() {
   const classes=useStyles();
@@ -12,6 +13,9 @@ export default function FoodBooking() {
   const [currentDate,setCurrentDate]=useState();
   const [waiter,setWaiter]=useState([]);
   const [waiterId,setWaiterId]=useState("");
+  const [floorNo,setFloorNo]=useState('');
+  const [tableNo,setTableNo]=useState('');
+  const [refresh,setRefresh]=useState(false);
 
   const getCurrentDate=()=>{
     const date=new Date();
@@ -30,7 +34,8 @@ export default function FoodBooking() {
   }
 
   useEffect(function(){
-    setCurrentDate(getCurrentDate()+" "+getCurrentTime());
+    
+    setCurrentDate("["+getCurrentDate()+"] "+" "+getCurrentTime());
     fetchAllWaiter() 
   },[]);
 
@@ -45,13 +50,17 @@ export default function FoodBooking() {
   return (
     <div className={classes.root}>
       <div className={classes.box}>
-        <Grid container spacing={3}>
+        <Grid container spacing={3} style={{display:'flex',alignItems:'center'}}>
+
+          <Grid item xs={3} >
+            <img src={`${serverURL}/images/${admin.filelogo}`}  style={{width:80,height:'auto',paddingLeft:'20px'}}/>
+          </Grid>
           
-          <Grid item xs={4}>
-            <TextField label='Current Date' value={currentDate}/>
+          <Grid item xs={3}>
+            <TextField  value={currentDate}/>
           </Grid>
 
-          <Grid item xs={8}>
+          <Grid item xs={3}>
             <FormControl fullWidth>
               <InputLabel>Waiter Name</InputLabel>
               <Select label={"Category Name"} 
@@ -63,17 +72,24 @@ export default function FoodBooking() {
             </FormControl>
           </Grid>
 
+          <Grid item xs={3} style={{fontFamily:'kanit',fontWeight:'bold',fontSize:32,textAlign:'right',color:'#273c75',paddingRight:'20px'}}>
+            {floorNo} {tableNo.length!==0?<>Table {tableNo}</>:<></>} 
+          </Grid>
+
         </Grid>
       </div>
 
       <div className={classes.box}> 
         <Grid container spacing={2}>
           <Grid item xs={2}>
-            <CategoryComponent/>
+            <CategoryComponent tableno={tableNo} floorno={floorNo} refresh={refresh} setrefresh={setRefresh}/>
           </Grid>
-          <Grid item xs={10}>
-            <TableComponent/>
+          <Grid item xs={5}>
+            <TableComponent floorno={floorNo}  setfloorno={setFloorNo} settableno={setTableNo} />
           </Grid>  
+          <Grid item xs={5}>
+             <TableCart floortableno={`#${floorNo}${tableNo}`} refresh={refresh} setrefresh={setRefresh} />
+          </Grid>
         </Grid>
       </div>  
     </div>

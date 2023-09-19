@@ -10,4 +10,4 @@ var pool=mysql.createPool({
     multipleStatements:true,
     connectionLimit:100
 })
-module.exports=pool
+module.exports=pool;

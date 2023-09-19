@@ -322,8 +322,9 @@ function RestaurantInterface(){
                         <InputLabel>GST Type</InputLabel>
                         <Select label="GST Type" value={gstType} onChange={(event)=>setGstType(event.target.value)}>
                           <MenuItem>-Select Gst Type-</MenuItem>
-                          <MenuItem value="5 Star">5 Star</MenuItem>
-                          <MenuItem value="Other">Other</MenuItem>
+                          <MenuItem value="28">5 Star</MenuItem>
+                          <MenuItem value="18">3 Star</MenuItem>
+                          <MenuItem value="5">Other</MenuItem>
                         </Select>
                       </FormControl>
                     </Grid>

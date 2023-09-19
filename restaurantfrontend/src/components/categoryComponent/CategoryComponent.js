@@ -14,7 +14,7 @@ import Avatar from '@mui/material/Avatar';
 import { Paper } from '@mui/material';
 import FoodComponent from '../foodComponent/FoodComponent';
 
-export default function CategoryComponent() {
+export default function CategoryComponent(props) {
   const admin=JSON.parse(localStorage.getItem('ADMIN'));
 
   const [listCategory,setListCategory]=useState([]);
@@ -60,7 +60,7 @@ export default function CategoryComponent() {
   return (
     <Paper sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper',boxShadow:'0 0 4px  #222' }}>
       {showCategoryList()}
-      <FoodComponent categoryid={categoryId} setopen={setOpen} open={open}/>
+      <FoodComponent categoryid={categoryId} setopen={setOpen} open={open} tableno={props.tableno} floorno={props.floorno} refresh={props.refresh} setrefresh={props.setrefresh}/>
     </Paper>
   );
 }

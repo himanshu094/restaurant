@@ -4,6 +4,7 @@ import AdminLogin from "./screens/admin/AdminLogin";
 import Dashboard from "./screens/superadmin/Dashboard";
 import AdminDashboard from "./screens/admin/AdminDashboard";
 import FoodBooking from "./screens/foodbooking/FoodBooking";
+import Plusminus from "./components/plusminus/Plusminus";
 
 
 function App() {
@@ -15,7 +16,8 @@ function App() {
           <Route element={<AdminLogin/>} path='/adminlogin'/>  
           <Route element={<Dashboard/>} path='/dashboard/*'/>
           <Route element={<AdminDashboard/>} path='/admindashboard/*'/>  
-          <Route element={<FoodBooking/>} path="/foodbooking" />       
+          <Route element={<FoodBooking/>} path="/foodbooking" /> 
+          <Route element={<Plusminus/>} path="/plusminus" />       
         </Routes>
       </Router>
     </div>
