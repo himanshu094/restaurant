@@ -13,6 +13,7 @@ export default function FoodBooking() {
   const [currentDate,setCurrentDate]=useState();
   const [waiter,setWaiter]=useState([]);
   const [waiterId,setWaiterId]=useState("");
+  const [waiterName,setWaiterName]=useState('')
   const [floorNo,setFloorNo]=useState('');
   const [tableNo,setTableNo]=useState('');
   const [refresh,setRefresh]=useState(false);
@@ -47,24 +48,26 @@ export default function FoodBooking() {
     })
   }
 
+  const handleWaiter=(event,value)=>{
+      console.log("Handle Waiter ",value);
+      setWaiterId(event.target.value);
+      setWaiterName(value.props.children)
+  }
+
   return (
     <div className={classes.root}>
       <div className={classes.box}>
         <Grid container spacing={3} style={{display:'flex',alignItems:'center'}}>
 
-          <Grid item xs={3} >
-            <img src={`${serverURL}/images/${admin.filelogo}`}  style={{width:80,height:'auto',paddingLeft:'20px'}}/>
-          </Grid>
-          
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <TextField  value={currentDate}/>
           </Grid>
 
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <FormControl fullWidth>
               <InputLabel>Waiter Name</InputLabel>
               <Select label={"Category Name"} 
-                onChange={(event)=>setWaiterId(event.target.value)} 
+                onChange={handleWaiter} 
                 value={waiterId}>
                 <MenuItem>-Select Waiter-</MenuItem>
                 {fillWaiter()}
@@ -72,23 +75,23 @@ export default function FoodBooking() {
             </FormControl>
           </Grid>
 
-          <Grid item xs={3} style={{fontFamily:'kanit',fontWeight:'bold',fontSize:32,textAlign:'right',color:'#273c75',paddingRight:'20px'}}>
+          <Grid item xs={4} style={{fontFamily:'kanit',fontWeight:'bold',fontSize:32,textAlign:'right',color:'#273c75',paddingRight:'20px'}}>
             {floorNo} {tableNo.length!==0?<>Table {tableNo}</>:<></>} 
           </Grid>
 
         </Grid>
       </div>
-
+    
       <div className={classes.box}> 
         <Grid container spacing={2}>
-          <Grid item xs={2}>
+          <Grid item xs={2.2}>
             <CategoryComponent tableno={tableNo} floorno={floorNo} refresh={refresh} setrefresh={setRefresh}/>
           </Grid>
-          <Grid item xs={5}>
+          <Grid item xs={4.7}>
             <TableComponent floorno={floorNo}  setfloorno={setFloorNo} settableno={setTableNo} />
           </Grid>  
           <Grid item xs={5}>
-             <TableCart floortableno={`#${floorNo}${tableNo}`} refresh={refresh} setrefresh={setRefresh} />
+             <TableCart waitername={waiterName} floorno={floorNo} tableno={tableNo} floortableno={`#${floorNo}${tableNo}`} refresh={refresh} setrefresh={setRefresh} />
           </Grid>
         </Grid>
       </div>  

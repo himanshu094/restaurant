@@ -5,10 +5,13 @@ import { postData } from "../../services/FetchNodeServices";
 import {useSelector,useDispatch} from "react-redux";
 import { Calculate } from "@mui/icons-material";
 import Plusminus from "../plusminus/Plusminus";
+import Swal from "sweetalert2";
 
 export default function TableCart(props){
   const navigate=useNavigate();
   const admin=JSON.parse(localStorage.getItem('ADMIN'));
+  const [customername,setCustomername]=useState('');
+  const [mobileNo,setMobileNo]=useState('')
   const gst=(admin.gsttype)/2;
   
 
@@ -55,7 +58,47 @@ export default function TableCart(props){
   const [floor,setFloor]=useState([]);
   const [table,setTable]=useState([]);
 
-  const handleSave=()=>{
+  const getCurrentDate=()=>{
+    const date=new Date();
+    const cd=date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+    return cd; 
+  }
+
+  const getCurrentTime=()=>{
+    const time=new Date()
+    const ct=time.getHours()+":"+time.getMinutes();
+    return ct;
+  }
+
+  const handleSave=async()=>{
+    const body={billtime:getCurrentTime(), billdate:getCurrentDate(),
+      tableno:`${props.floorno}, Table ${props.tableno}`, server:props.waitername,
+      fssai:admin.fssai, cnote:'', gst:admin.gstno, billingdetails:JSON.stringify(foodOrder[props.floortableno]), totalamount:totalOffer+(totalOffer*admin.gsttype/100),
+      customername, mobileno:mobileNo};  
+    //! imp
+    const response=await postData('billing/bill_submit',body);
+    
+    if(response.status){
+      Swal.fire({
+        title: 'Are you sure to save the Bill?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Save It!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire(
+            'Saved!',
+            'Your Bill has been saved.',
+            'success'
+          )
+          dispatch({type:'DEL_ORDER',payload:[props.floortableno]});
+          props.setrefresh(!props.refresh);
+        }
+      })
+    }
 
   }
 
@@ -63,10 +106,10 @@ export default function TableCart(props){
     return foodList.map((item,i)=>{
       return(<>
          <Grid item xs={1}>{i+1}</Grid>
-         <Grid item xs={3}>{item?.fooditemname}</Grid>
+         <Grid item xs={2.8}>{item?.fooditemname}</Grid>
          <Grid item xs={2} style={{textAlign:'right'}}>&#8377;{item?.price}</Grid>
          <Grid item xs={2} style={{textAlign:'right'}}>&#8377;{item?.offerprice}</Grid>
-         <Grid item xs={2} ><Plusminus onChange={(v)=>handleQtyChange(v,item)} qty={item?.qty}/></Grid>
+         <Grid item xs={2.2} ><Plusminus onChange={(v)=>handleQtyChange(v,item)} qty={item?.qty}/></Grid>
          <Grid item xs={2} style={{textAlign:'right',fontWeight:'bold'}}>&#8377;{item?.offerprice*item?.qty}</Grid>
       </>)
     })
@@ -107,8 +150,8 @@ export default function TableCart(props){
     return(<div>
           <Grid container spacing={1} style={{fontFamily:'kanit'}}>
 
-          <Grid item xs={6}><TextField label="Customer Name" variant="standard"/></Grid>
-          <Grid item xs={6}><TextField label="Mobile" variant="standard"/></Grid>
+          <Grid item xs={6}><TextField onChange={(e)=>setCustomername(e.target.value)} label="Customer Name" variant="standard"/></Grid>
+          <Grid item xs={6}><TextField onChange={(e)=>setMobileNo(e.target.value)} label="Mobile" variant="standard"/></Grid>
 
           <Grid item xs={12}><Divider /></Grid>
           <Grid item xs={1} style={{fontWeight:'bold'}}>Sn</Grid>

@@ -1,6 +1,7 @@
 const express =require('express');
 const router = express.Router();
 const pool=require('./pool');
+const jwt=require('jsonwebtoken');
 
 router.post('/checklogin',function(req,res,next){
   console.log(req.body);

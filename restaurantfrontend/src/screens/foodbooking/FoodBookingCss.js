@@ -3,17 +3,18 @@ import { makeStyles } from "@mui/styles";
 export const useStyles = makeStyles({
   root: {
     width:"auto",
-    height:"89vh",
-    background:"#dfe4ea",
+    height:"100%",
+    background:"#ededed",
     display:"flex",
     flexDirection:'column',
     alignItems:"center",
-    justifyContent:"center",
-    paddingBlock:'40px',
-    gap:18
+    justifyContent:"flex-start",
+    paddingBlock:'30px',
+    boxSizing:'border-box',
+    gap:"25px"
   },
   box:{
-    width:"80%",
+    width:"90%",
     height:"auto",
     borderRadius:10,
     background:"#fff",

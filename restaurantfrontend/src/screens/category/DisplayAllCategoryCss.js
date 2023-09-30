@@ -10,12 +10,12 @@ export const useStyles = makeStyles({
     justifyContent:"center"
   },
   boxDisplay:{
-    width:"60%",
+    width:"84%",
     height:"auto",
     borderRadius:10,
     background:"#fff",
     padding:15,
-    marginBlock:'40px',
+    // marginBlock:'40px',
     boxShadow:"0 0 15px #222",
   },
   center:{

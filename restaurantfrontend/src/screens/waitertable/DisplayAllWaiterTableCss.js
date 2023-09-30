@@ -10,7 +10,7 @@ export const useStyles = makeStyles({
     justifyContent:"center"
   },
   box:{
-    width:"80%",
+    width:"84%",
     height:"auto",
     borderRadius:10,
     background:"#fff",

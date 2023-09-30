@@ -409,6 +409,12 @@ export default function DisplayAllFoodItem()
                 onClick: (event, rowData) => navigate('/admindashboard/fooditeminterface')
               ,}
             ]}
+            options={{
+              paging:true,
+              pageSize:3,       // make initial page size
+              emptyRowsWhenPaging: false,   // To avoid of having empty rows
+              pageSizeOptions:[3,5,7],    // rows selection options
+            }}  
           />
         )
       }

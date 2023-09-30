@@ -23,7 +23,6 @@ export default function FoodComponent(props) {
 
   const [listFood,setListFood]=useState([]);
   const [tempListFood,setTempListFood]=useState([]);
-  const [order,setOrder]=useState([]);
 
   const fetchAllFood=async()=>{
     var result=await postData('fooditem/fetch_all_fooditem_by_category',{restaurantid:admin.restaurantid,categoryid:props.categoryid});
@@ -75,7 +74,6 @@ export default function FoodComponent(props) {
       return(
       <div  >
         <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper',padding:0}}>
-
           <ListItemButton onClick={()=>handleOrder(item)} alignItems="flex-start" style={{display:'flex',alignItems:'center'}}>
 
               <ListItemAvatar>

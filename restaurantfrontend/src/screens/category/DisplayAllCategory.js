@@ -311,6 +311,12 @@ export default function DisplayAllCategory()
             onClick: (event, rowData) => navigate('/admindashboard/categoryinterface')
           ,}
         ]}
+        options={{
+          paging:true,
+          pageSize:3,       // make initial page size
+          emptyRowsWhenPaging: false,   // To avoid of having empty rows
+          pageSizeOptions:[3,5,7],    // rows selection options
+        }}  
       />
     )
   }

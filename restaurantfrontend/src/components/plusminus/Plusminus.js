@@ -35,7 +35,6 @@ export default function Plusminus(props) {
   useEffect(function(){
     setValue(props.qty)
   },[props]);
-  
   const handlePlus=()=>{
           const c=value+1;
           setValue(c);
