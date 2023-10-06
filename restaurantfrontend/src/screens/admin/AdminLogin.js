@@ -44,6 +44,7 @@ export default function AdminLogin() {
     if(result.status)
     {
          localStorage.setItem('ADMIN',JSON.stringify(result.data));
+         localStorage.setItem("TOKEN",result.token)
        // console.log(result.data);
         navigate('/admindashboard');
     }
@@ -76,7 +77,7 @@ export default function AdminLogin() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Admin Sign In
           </Typography>
           <Box  sx={{ mt: 1 }}>
             <TextField

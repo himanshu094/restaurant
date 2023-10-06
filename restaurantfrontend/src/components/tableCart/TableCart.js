@@ -1,11 +1,13 @@
 import { Button, Divider, Grid, Paper, TextField, dividerClasses } from "@mui/material";
 import { useEffect,useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { postData } from "../../services/FetchNodeServices";
+import { postData, serverURL } from "../../services/FetchNodeServices";
 import {useSelector,useDispatch} from "react-redux";
 import { Calculate } from "@mui/icons-material";
 import Plusminus from "../plusminus/Plusminus";
 import Swal from "sweetalert2";
+import { useCallback } from "react";
+import useRazorpay from "react-razorpay";
 
 export default function TableCart(props){
   const navigate=useNavigate();
@@ -13,6 +15,7 @@ export default function TableCart(props){
   const [customername,setCustomername]=useState('');
   const [mobileNo,setMobileNo]=useState('')
   const gst=(admin.gsttype)/2;
+  const [Razorpay] = useRazorpay();
   
 
   const foodOrder=useSelector((state)=>state.orderData);
@@ -69,6 +72,40 @@ export default function TableCart(props){
     const ct=time.getHours()+":"+time.getMinutes();
     return ct;
   }
+
+  //!payment API ///////////////////////////////////////
+
+  const handlePayment = useCallback(async(na) => {
+
+    const options = {
+      key: "rzp_test_GQ6XaPC6gMPNwH",
+      amount: na*100,
+      currency: "INR",
+      name: admin.restaurantname,
+      description: "Online Payments",
+      image: `${serverURL}/images/${admin.filelogo}`,
+
+      handler: (res) => {
+        console.log("Payment Details",res);
+      },
+      prefill: {
+        name: customername,
+        // email: "youremail@example.com",
+        contact:mobileNo,
+      },
+      notes: {
+        address: "Razorpay Corporate Office",
+      },
+      theme: {
+        color: "#1976d2",
+      },
+    };
+
+    const rzpay = new Razorpay(options);
+    rzpay.open();
+  }, [Razorpay]);
+
+  //! End payment ///////////////////////////////////
 
   const handleSave=async()=>{
     const body={billtime:getCurrentTime(), billdate:getCurrentDate(),
@@ -140,8 +177,12 @@ export default function TableCart(props){
 
         <Grid item xs={12}><Divider/></Grid> 
 
-        <Grid item xs={12}>
+        <Grid item xs={6}>
           <Button onClick={handleSave} variant="contained" style={{display:'flex',marginLeft:'auto'}} color="primary" >Save & Print</Button> 
+        </Grid>
+
+        <Grid item xs={6}>
+          <Button onClick={()=>handlePayment(totalOffer+(totalOffer*admin.gsttype/100))} variant="contained" style={{display:'flex',marginLeft:'auto'}} color="primary" >Payment Online</Button> 
         </Grid>
     </>)
   }

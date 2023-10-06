@@ -4,9 +4,14 @@ const serverURL='http://localhost:5000';
 
 const getData=async(url)=>{
   try{
-    const response=await axios.get(`${serverURL}/${url}`);
+    let headers={}
+    if(localStorage.getItem("TOKEN")){
+      headers={headers:{Authorization:localStorage.getItem("TOKEN")}};
+    }
+    const response=await axios.get(`${serverURL}/${url}`,headers);
     const result=await response.data;
-    return(result)
+
+    return result;
   }
   catch(e)
   {
@@ -17,7 +22,11 @@ const getData=async(url)=>{
 
 const postData=async(url,body)=>{
   try{
-    const response=await axios.post(`${serverURL}/${url}`,body);
+    let headers={};
+    if(localStorage.getItem("TOKEN")){
+      headers={headers:{Authorization:localStorage.getItem("TOKEN")}};
+    }
+    const response=await axios.post(`${serverURL}/${url}`,body,headers);
     const result=await response.data;
     return(result)
   }

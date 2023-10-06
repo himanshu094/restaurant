@@ -1,6 +1,7 @@
 const express =require('express');
 const router = express.Router();
 const pool=require('./pool');
+const jwt=require("jsonwebtoken")
 
 router.post('/checklogin',function(req,res,next){
   console.log(req.body);
@@ -13,7 +14,10 @@ router.post('/checklogin',function(req,res,next){
     {
      if(result.length==1)
      { 
-       res.status(200).json({status:true,data:result[0],message:'Login Successful....'});
+      if(result.length==1){
+        var token=jwt.sign({data:result[0]},"shhhhhh")
+      }
+       res.status(200).json({status:true,data:result[0],message:'Login Successful....',token});
       }
       else
       {

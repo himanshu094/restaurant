@@ -44,6 +44,7 @@ export default function LoginPage() {
     if(result.status)
     {   
         localStorage.setItem('SUPER',JSON.stringify(result.data));
+        localStorage.setItem("TOKEN",result.token)
         navigate('/dashboard'); 
     }
     else
@@ -75,7 +76,7 @@ export default function LoginPage() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+           Super Admin Sign in
           </Typography>
           <Box  sx={{ mt: 1 }}>
             <TextField

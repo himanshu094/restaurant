@@ -3,7 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var cors=require('cors')
+var cors=require('cors');
+var jwt = require("jsonwebtoken")
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -29,7 +30,23 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(cors())
+app.use(cors());
+
+app.use('/superadmin',superadminRouter);
+app.use('/admin',adminRouter);
+
+app.use((req,res,next)=>{
+  const token = req.headers.authorization;
+  console.log(token);
+  jwt.verify(token,"shhhhhh",function(err,decoded){
+    console.log(err,decoded);
+    if(decoded){
+      next();
+    }else{
+      res.status(401).json({status:false,message:"Invalid token"})
+    }
+  })
+})
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -39,8 +56,7 @@ app.use('/category',categoryRouter);
 app.use('/fooditem',fooditemRouter);
 app.use('/tablebooking',tablebookingRouter);
 app.use('/waiter',waiterRouter);
-app.use('/superadmin',superadminRouter);
-app.use('/admin',adminRouter);
+
 app.use('/waitertable',waitertableRouter);
 app.use('/billing',billingRouter);
 
