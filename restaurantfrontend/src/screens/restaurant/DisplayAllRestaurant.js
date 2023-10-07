@@ -19,18 +19,19 @@ import { UploadFile } from "@mui/icons-material";
 const useStyles = makeStyles({
   rootdisplay: {
     width:"auto",
-    height:"120vh",
+    height:"auto",
     background:"#dfe4ea",
     display:"flex",
     alignItems:"center",
-    justifyContent:"center"
+    justifyContent:"center",
+    paddingBlock:'25px'
   },
   boxdisplay:{
     width:"92%",
     height:"auto",
     borderRadius:10,
     background:"#fff",
-    padding:15
+    padding:8
   },
   root: {
     

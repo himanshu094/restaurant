@@ -37,7 +37,7 @@ export default function Dashboard(props){
           </Toolbar>
         </AppBar>
         <Grid container spaces={3} style={{paddingInlineStart:5}} >
-          <Grid item xs={2.2} >
+          <Grid item xs={1.8} >
             <Paper >
               <div className={classes.leftBarStyle}>
                 <Avatar src={`${serverURL}/images/${sa.picture}`} variant="circular" style={{width:80,height:80}}/> 
@@ -79,7 +79,7 @@ export default function Dashboard(props){
               </div> 
             </Paper>
           </Grid> 
-          <Grid item xs={9.8} style={{paddingLeft:5,paddingTop:10}}>
+          <Grid item xs={10.2} style={{paddingLeft:5,paddingTop:10}}>
             <Routes>
               <Route element={<RestaurantInterface/>} path='/restaurantinterface'/>
               <Route element={<DisplayAllRestaurant/>} path='/displayallrestaurant' />

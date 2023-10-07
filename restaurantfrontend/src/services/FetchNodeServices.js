@@ -15,8 +15,10 @@ const getData=async(url)=>{
   }
   catch(e)
   {
-     console.log(e);
-     return(null)
+    if(e.response.status==401){
+      localStorage.clear();
+      window.location.replace("/loginpage");
+    }
   }
 }
 
@@ -32,8 +34,10 @@ const postData=async(url,body)=>{
   }
   catch(e)
   {
-     console.log(e);
-     return(null)
+    if(e.response.status==401){
+      localStorage.clear();
+      window.location.replace("/loginpage")
+    }
   }
 }
 
