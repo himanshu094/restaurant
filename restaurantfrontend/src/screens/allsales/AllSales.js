@@ -95,7 +95,7 @@ export default function AllSales()
                 Total Sales
               </div>
               <div>
-                &#8377; {totalAmount.totalbill==0?totalAmount.totalbill:0}
+                &#8377; {totalAmount.totalbill!=0?totalAmount.totalbill:0}
               </div>
           </Grid>
 

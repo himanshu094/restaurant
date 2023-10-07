@@ -40,7 +40,7 @@ export default function Deposits() {
     <React.Fragment>
       <Title>Today's Deposits</Title>
       <Typography component="p" variant="h4">
-        &#8377; {totalAmount==0?totalAmount:0}
+        &#8377; {totalAmount!=0?totalAmount:0}
       </Typography>
       <Typography color="text.secondary" sx={{ flex: 1 }}>
         on {getCurrentDateString()}
